@@ -1,0 +1,15 @@
+{
+  "name": "corley-polecats",
+  "version": "0.0.1",
+  "devDependencies": {
+    "angular": "1.2.*",
+    "angular-mocks": "latest",
+    "bootstrap": "3.1.*",
+    "angular-resource": "latest",
+    "angular-ui-router": "~0.0.1",
+    "angular-ui-utils": "~0.0.3",
+    "angular-cookies": "latest",
+    "angular-knob": "latest" 
+  },
+  "dependencies": {}
+}
