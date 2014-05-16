@@ -16,6 +16,6 @@ angular.module( 'ngPolecats.home', ['ui.state'])
  * Home controller
  */
 .controller( 'HomeCtrl', function HomeController( $scope, $stateParams ) { 
-
+    
 });
 
