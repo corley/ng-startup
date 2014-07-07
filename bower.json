@@ -6,8 +6,8 @@
     "angular-mocks": "latest",
     "bootstrap": "3.1.*",
     "angular-resource": "latest",
-    "angular-ui-router": "~0.0.1",
-    "angular-ui-utils": "~0.0.3",
+    "angular-ui-router": "0.2.*",
+    "angular-ui-utils": "0.1.*",
     "angular-cookies": "latest",
     "angular-knob": "latest" 
   },
