@@ -1,10 +1,13 @@
 angular.module(
         'ngPolecats',
-        [ 'templates-app', 'templates-common', 'ui.state', 'ui.route', 
-          'ngPolecats.home']
+        [ 
+            'templates-app', 
+            'templates-common', 
+            'ui.router', 
+            'ngPolecats.home'
+        ]
 )
 .config(function myAppConfig($urlRouterProvider) {
-    //routing
     $urlRouterProvider.otherwise('/home'); 
 })
 .run(function run() {

@@ -64,7 +64,7 @@ module.exports = {
   vendor_files: {
     js: [
          'bower_components/angular/angular.js',
-         'bower_components/jquery/jquery.js',
+         'bower_components/jquery/dist/jquery.js',
          'bower_components/bootstrap/dist/js/bootstrap.js',
          'bower_components/angular-ui-router/release/angular-ui-router.js',
          'bower_components/angular-ui-utils/modules/route/route.js',

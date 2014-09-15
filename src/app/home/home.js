@@ -1,4 +1,4 @@
-angular.module( 'ngPolecats.home', ['ui.state'])
+angular.module( 'ngPolecats.home', ['ui.router.state'])
 .config(function config( $stateProvider ) {
 	$stateProvider.state( 'home', {
 		url: '/home',
