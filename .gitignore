@@ -7,3 +7,4 @@ vendor/
 Thumbs.db
 .project
 .settings
+configuration.json

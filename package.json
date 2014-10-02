@@ -3,7 +3,7 @@
   "name": "corley-polecats",
   "version": "0.0.1",
   "homepage": "http://www.corley.it",
-  "repository": {}, 
+  "repository": {},
   "licenses": {
     "type": "Reserved",
     "url": ""
@@ -14,17 +14,17 @@
   "devDependencies": {
     "grunt": "~0.4.1",
     "grunt-contrib-clean": "~0.6.0",
-    "grunt-contrib-copy": "~0.5.0",
+    "grunt-contrib-copy": "0.6.*",
     "grunt-contrib-jshint": "~0.10.0",
     "grunt-contrib-concat": "~0.5.0",
     "grunt-contrib-watch": "~0.6.0",
-    "grunt-contrib-uglify": "~0.5.0",
+    "grunt-contrib-uglify": "0.6.*",
     "grunt-contrib-less": "~0.11.0",
     "grunt-karma": "~0.9.0",
     "grunt-ngmin": "0.0.3",
     "grunt-html2js": "~0.2.0",
     "grunt-bump": "~0.0.15",
-    "karma": "~0.12.9",
+    "karma": "0.12.*",
     "karma-jasmine": "~0.2.2",
     "karma-phantomjs-launcher": "~0.1.3"
   }
