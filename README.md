@@ -8,9 +8,16 @@ $ npm install
 $ grunt watch
 ```
 
+## Grunt configuration
+```bash
+cp ./configuration.json.dist ./configuration.json
+```
+* AWS credential
+
 ## Grunt Commands
 * watch - Active livereload
 * build - Prepare buil, compile JS, LESS, template..
 * compile - Prepeare build
 * bump - Bump new version
 * test - Run karma conf
+* s3 - deploy build dir in S3 bucket

@@ -6,6 +6,7 @@ module.exports = function ( grunt ) {
   grunt.loadNpmTasks('grunt-contrib-watch');
   grunt.loadNpmTasks('grunt-contrib-uglify');
   grunt.loadNpmTasks('grunt-bump');
+  grunt.loadNpmTasks('grunt-aws');
   grunt.loadNpmTasks('grunt-contrib-less');
   grunt.loadNpmTasks('grunt-karma');
   grunt.loadNpmTasks('grunt-ngmin');
@@ -24,7 +25,7 @@ module.exports = function ( grunt ) {
      */
     pkg: grunt.file.readJSON("package.json"),
 
-    configuration: grunt.file.readJSON("configuration.json"),
+    conf: grunt.file.readJSON("configuration.json"),
 
     /**
      * The banner is the comment that is placed at the top of our compiled
@@ -198,6 +199,7 @@ module.exports = function ( grunt ) {
         ]
       }
     },
+
 
     /**
      * Minify the sources!
@@ -373,6 +375,22 @@ module.exports = function ( grunt ) {
         ]
       }
     },
+        /**
+        * Deploy build dir in S3
+        */
+        s3: {
+        options: {
+            accessKeyId: "<%= conf.aws.accessKeyId %>",
+            secretAccessKey: "<%= conf.aws.secretAccessKey %>",
+            cache: false,
+            access: "public-read",
+            bucket: "<%= conf.aws.bucket %>"
+        },
+        build: {
+            cwd: "build/",
+            src: "**"
+        }
+        },
 
     /**
      * And for rapid development, we have a watch set up that checks to see if
@@ -469,6 +487,8 @@ module.exports = function ( grunt ) {
           livereload: false
         }
       }
+
+
     }
   };
 
@@ -483,7 +503,6 @@ module.exports = function ( grunt ) {
    */
   grunt.renameTask( 'watch', 'delta' );
   grunt.registerTask( 'watch', [ 'employee', 'delta' ] );
-
   /**
    * The default task is to build and compile.
    */
