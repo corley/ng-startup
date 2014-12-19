@@ -9,7 +9,7 @@ module.exports = function ( grunt ) {
   grunt.loadNpmTasks('grunt-aws');
   grunt.loadNpmTasks('grunt-contrib-less');
   grunt.loadNpmTasks('grunt-karma');
-  grunt.loadNpmTasks('grunt-ngmin');
+  grunt.loadNpmTasks('grunt-ng-annotate');
   grunt.loadNpmTasks('grunt-html2js');
 
   var userConfig = require( './build.config.js' );
@@ -184,10 +184,10 @@ module.exports = function ( grunt ) {
     },
 
     /**
-     * `ng-min` annotates the sources before minifying. That is, it allows us
+     * `ngAnnotate` annotates the sources before minifying. That is, it allows us
      * to code without the array syntax.
      */
-    ngmin: {
+    ngAnnotate: {
       compile: {
         files: [
           {
@@ -326,7 +326,6 @@ module.exports = function ( grunt ) {
      * and JS files co-exist here but they get split apart later.
      */
     index: {
-
       /**
        * During development, we don't want to have wait for compilation,
        * concatenation, minification, etc. So to avoid these steps, we simply
@@ -527,7 +526,7 @@ module.exports = function ( grunt ) {
    * minifying your code.
    */
   grunt.registerTask( 'compile', [
-    'less:compile', 'copy:compile_assets','copy:compile_i18n', 'ngmin', 'concat:compile_js', 'uglify', 'index:compile'
+    'less:compile', 'copy:compile_assets','copy:compile_i18n', 'ngAnnotate', 'concat:compile_js', 'uglify', 'index:compile'
   ]);
 
   /**
