@@ -9,7 +9,8 @@
     "url": ""
   },
   "scripts": {
-    "postinstall": "bower install"
+    "postinstall": "bower install",
+    "postiupdate": "bower update"
   },
   "devDependencies": {
     "grunt": "~0.4.1",
@@ -20,11 +21,11 @@
     "grunt-contrib-watch": "~0.6.0",
     "grunt-contrib-uglify": "0.6.*",
     "grunt-contrib-less": "~0.11.0",
-    "grunt-karma": "~0.9.0",
-    "grunt-ngmin": "0.0.3",
+    "grunt-ng-annotate": "^0.8.0",
     "grunt-html2js": "~0.2.0",
     "grunt-aws": "0.3.*",
     "grunt-bump": "~0.0.15",
+    "grunt-karma": "~0.9.0",
     "karma": "0.12.*",
     "karma-jasmine": "~0.2.2",
     "karma-phantomjs-launcher": "~0.1.3"
