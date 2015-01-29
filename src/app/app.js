@@ -1,22 +1,17 @@
 angular.module(
-        'ngPolecats',
-        [ 
-            'templates-app', 
-            'templates-common', 
-            'ui.router', 
-            'ngPolecats.home'
+        'ng-startup',
+        [
+            'templates-app',
+            'templates-common',
+            'ui.router',
+            'ng-startup.home'
         ]
 )
 .config(function myAppConfig($urlRouterProvider) {
-    $urlRouterProvider.otherwise('/home'); 
+    $urlRouterProvider.otherwise('/home');
 })
 .run(function run() {
-
 })
 .controller('AppCtrl', function AppCtrl($scope, $location, $rootScope) {
-    $scope.$on('$stateChangeSuccess', function(event, toState, toParams, fromState, fromParams) {
-    });
-    $scope.$on('$stateChangeStart', function(event, toState, toParams, fromState, fromParams) {
-    });
 })
 ;

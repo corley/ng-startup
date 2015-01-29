@@ -1,4 +1,4 @@
-angular.module( 'ngPolecats.home', ['ui.router.state'])
+angular.module( 'ng-startup.home', ['ui.router.state'])
 .config(function config( $stateProvider ) {
 	$stateProvider.state( 'home', {
 		url: '/home',
@@ -10,12 +10,12 @@ angular.module( 'ngPolecats.home', ['ui.router.state'])
 		},
 		data:{ pageTitle: 'Home' }
 	});
-	
+
 })
 /**
  * Home controller
  */
-.controller( 'HomeCtrl', function HomeController( $scope, $stateParams ) { 
-    
+.controller( 'HomeCtrl', function HomeController( $scope, $stateParams ) {
+
 });
 
