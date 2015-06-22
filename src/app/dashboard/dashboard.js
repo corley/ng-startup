@@ -15,10 +15,10 @@ angular.module( 'ng-startup.dashboard', ['ui.router.state'])
 /**
  * Dashboard controller, reserved by Acl
  */
-.controller( 'DashboardCtrl', ['$scope', '$stateParams', 'NasaSatellitesRest', 'NasaIssRest', function HomeController( $scope, $stateParams, NasaSatellitesRest, NasaIssRest ) {
+.controller( 'DashboardCtrl', ['$scope', '$stateParams', 'NewsRest', function HomeController( $scope, $stateParams, NewsRest ) {
 
-	NasaSatellitesRest.get().then(function(res) {
-
+	NewsRest.get().then(function(res) {
+		$scope.results = res.data;
 	});
 
 }])

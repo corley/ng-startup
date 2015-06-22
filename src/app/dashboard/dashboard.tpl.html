@@ -1,9 +1,17 @@
 <div class="well">
   <h1>{{ 'welcome' | translate }}</h1>
-
   <p>
-    <a ui-sref="signin" class="btn btn-success"><i class="glyphicon glyphicon-log-in"></i> Go to signin page</a>
+    <button class="btn" ng-class="{'btn-success': (order == 'timestamp')}" ng-init="order = 'timestamp'" ng-click="order = 'timestamp'">Order by date</button>
+    <button class="btn"  ng-class="{'btn-success': (order == 'title')}" ng-click="order = 'title'">Order by title</button>
   </p>
+</div>
 
-
+<div class="row">
+  <div class="col-md-12" ng-repeat="news in results | orderBy : order">
+    <h2>{{ news.title }}</h2>
+    <p>{{ news.summary }}</p>
+    <p class="text-muted">
+    published on {{ news.timestamp | date }}
+    </p>
+  </div>
 </div>
