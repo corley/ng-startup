@@ -2,6 +2,7 @@
     "aws": {
         "accessKeyId":  "",
         "secretAccessKey": "",
-        "bucket": ""
+        "bucket": "",
+        "region": ""
     }
 }

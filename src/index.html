@@ -1,28 +1,13 @@
 <!DOCTYPE html>
-<html ng-app="ngStartup" ng-controller="AppCtrl">
+<html ng-app="ng-startup" ng-controller="AppCtrl">
 <head>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title ng-bind="pageTitle"></title>
 
-<!-- social media tags -->
-<meta name="twitter:card" content="">
-<meta name="twitter:site" content="">
-<meta name="twitter:title" content="">
-<meta name="twitter:description"
-	content="">
-<meta name="twitter:creator" content="">
-
-<meta name="twitter:image:src"	content="">
-<meta property="og:title" content="" />
-<meta property="og:type" content="website" />
-<meta property="og:url" content="" />
-<meta property="og:image" content="" />
-<meta property="og:description"	content="">
 
 <!-- font awesome from BootstrapCDN -->
 <link href="http://netdna.bootstrapcdn.com/font-awesome/3.2.1/css/font-awesome.css" rel="stylesheet">
 <link href="//netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap-glyphicons.css" rel="stylesheet">
-<link rel="stylesheet" href="//releases.flowplayer.org/5.4.4/skin/functional.css">
 <!-- compiled CSS -->
 <% styles.forEach( function ( file ) { %>
 <link rel="stylesheet" type="text/css" href="<%= file %>" />
@@ -33,10 +18,18 @@
 <% scripts.forEach( function ( file ) { %>
 <script type="text/javascript" src="<%= file %>"></script>
 <% }); %>
+
+
+
+<!-- devcode: phonegap -->
+<script type="text/javascript" src="cordova.js"></script>
+<!-- endcode -->
+
 </head>
 <body>
     <div class="container">
-        <div class="starter-template" ui-view="main" ></div>
+        <div ui-view="main" class="sliding-view" ></div>
+        <div ui-view="blank" class="sliding-view" ></div>
     </div>
 </body>
 </html>
