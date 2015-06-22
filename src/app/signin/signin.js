@@ -3,21 +3,38 @@ angular.module( 'ng-startup.signin', ['ui.router.state'])
 	$stateProvider.state( 'signin', {
 		url: '/signin',
 		views: {
-			"blank": {
+			"main": {
 				controller: 'SigninCtrl',
 				templateUrl: 'signin/signin.tpl.html'
 			}
 		},
 		data:{ pageTitle: 'Signin' }
 	});
+	$stateProvider.state( 'signout', {
+		url: '/signout',
+		views: {
+			"main": {
+				controller: 'SignoutCtrl'
+			}
+		},
+		data:{ pageTitle: 'Signout' }
+	});
 
 })
 /**
- * Home controller
+ * Signin controller
  */
 .controller( 'SigninCtrl', ['$rootScope', '$scope', '$stateParams', function SigninController( $rootScope, $scope, $stateParams ) {
 	$scope.doLogin = function(username, password) {
 		$rootScope.$broadcast("auth:login:success", {'role': 'ROLE_USER', 'provider': 'fakelogin', 'auth': {'username': username, 'password': password}});
 	};
 
-}]);
+}])
+/**
+ * Signout controller
+ */
+.controller( 'SignoutCtrl', ['$rootScope', '$scope', '$state', function SigninController( $rootScope, $scope, $state ) {
+	$rootScope.$broadcast("auth:logout:success");
+
+}])
+;

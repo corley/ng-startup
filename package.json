@@ -31,6 +31,7 @@
     "grunt-aws": "~0.4",
     "grunt-bump": "~0.0.15",
     "grunt-shell": "~0.7",
+    "grunt-http-server": "~1.4",
     "karma": "0.12.*",
     "karma-jasmine": "~0.3",
     "karma-phantomjs-launcher": "~0.1.3"

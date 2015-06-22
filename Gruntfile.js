@@ -15,6 +15,7 @@ module.exports = function ( grunt ) {
   grunt.loadNpmTasks('grunt-phonegap-build');
   grunt.loadNpmTasks('grunt-ng-annotate');
   grunt.loadNpmTasks('grunt-html2js');
+  grunt.loadNpmTasks('grunt-http-server');
 
   var userConfig = require( './build.config.js' );
 
@@ -67,6 +68,46 @@ module.exports = function ( grunt ) {
         push: false,
         pushTo: 'origin'
       }
+    },
+    /**
+    * run http server for local dev
+    */
+    'http-server': {
+
+        'dev': {
+
+            // the server root directory
+            root: "build/",
+            port: 8081,
+            host: "127.0.0.1",
+
+            cache: 0,
+            showDir : true,
+            autoIndex: true,
+            ext: "html",
+
+            runInBackground: true,
+            logFn: function(req, res, error) { }
+
+        },
+        'prod': {
+
+            // the server root directory
+            root: "bin/",
+            port: 8081,
+            host: "127.0.0.1",
+
+            cache: 0,
+            showDir : true,
+            autoIndex: true,
+            ext: "html",
+
+            runInBackground: false,
+            logFn: function(req, res, error) { }
+
+        }
+
+
     },
 
     /**
@@ -667,15 +708,15 @@ module.exports = function ( grunt ) {
    * `delta`) and then add a new task called `watch` that does a clean build
    * before watching for changes.
    */
-  grunt.renameTask( 'watch', 'delta' );
-  grunt.registerTask( 'watch', [ 'web-employee', 'delta' ] );
+  grunt.renameTask( 'watch', 'delta');
+  grunt.registerTask( 'watch', [ 'web-employee', 'http-server:dev', 'delta'  ] );
   grunt.registerTask( 'default', [ 'build', 'compile' ] );
   grunt.registerTask( 'test', ['karmaconfig', 'karma:continuous']);
   grunt.registerTask( 'build', ["appconf", 'web-employee', 'test']);
 
   grunt.registerTask( 'compile', [
     'clean:bin', 'html2js', 'jshint', 'copy:compile_assets','copy:compile_i18n', 'ngAnnotate',
-    'concat:compile_js', 'less:compile', 'index:compile', 'devcode:webprod', 'uglify'
+    'concat:compile_js', 'less:compile', 'index:compile', 'devcode:webprod', 'uglify', 'http-server:prod'
   ]);
 
   grunt.registerTask( 'web-employee', [

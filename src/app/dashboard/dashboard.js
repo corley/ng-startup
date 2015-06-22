@@ -22,4 +22,14 @@ angular.module( 'ng-startup.dashboard', ['ui.router.state'])
 	});
 
 }])
+.directive('header', [function() {
+	return {
+		restrict: "AE",
+		replace: true,
+		scope: {
+			username: "="
+		},
+		templateUrl: "dashboard/header.tpl.html"
+	};
+}])
 ;
