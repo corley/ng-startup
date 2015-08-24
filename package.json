@@ -9,7 +9,7 @@
     "url": ""
   },
   "scripts": {
-    "postinstall": "bower install",
+    "postinstall": "cp configuration.json.dist configuration.json && bower install",
     "postiupdate": "bower update"
   },
   "devDependencies": {
