@@ -1,0 +1,22 @@
+<div class="row">
+  <div class="col-lg-4 col-lg-offset-4 col-sm-6 col-lg-offset-6">
+    <div class="well margin_50_0">
+      <form ng-submit="doLogin(username, password)">
+        <div class="form-group">
+          <input type="text" ng-model="username" class="form-control" placeholder="username" required>
+        </div>
+        <div class="form-group">
+          <input type="password" ng-model="password" class="form-control" placeholder="password" required>
+        </div>
+        <p>
+          <button type="submit" class="btn btn-success">Click to sign in</button>
+        </p>
+        <p>
+          <small>
+            This is a fake login function that emulates a successful call to an authentication service. Just type any chars in the inputs then click to signi in.
+          </small>
+        </p>
+      </form>
+    </div>
+  </div>
+</div>

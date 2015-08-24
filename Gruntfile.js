@@ -5,12 +5,18 @@ module.exports = function ( grunt ) {
   grunt.loadNpmTasks('grunt-contrib-concat');
   grunt.loadNpmTasks('grunt-contrib-watch');
   grunt.loadNpmTasks('grunt-contrib-uglify');
+  grunt.loadNpmTasks('grunt-contrib-compress');
   grunt.loadNpmTasks('grunt-bump');
   grunt.loadNpmTasks('grunt-aws');
   grunt.loadNpmTasks('grunt-contrib-less');
+  grunt.loadNpmTasks('grunt-contrib-sass');
+  grunt.loadNpmTasks('grunt-shell');
   grunt.loadNpmTasks('grunt-karma');
+  grunt.loadNpmTasks('grunt-devcode');
+  grunt.loadNpmTasks('grunt-phonegap-build');
   grunt.loadNpmTasks('grunt-ng-annotate');
   grunt.loadNpmTasks('grunt-html2js');
+  grunt.loadNpmTasks('grunt-http-server');
 
   var userConfig = require( './build.config.js' );
 
@@ -64,14 +70,56 @@ module.exports = function ( grunt ) {
         pushTo: 'origin'
       }
     },
+    /**
+    * run http server for local dev
+    */
+    'http-server': {
+
+        'dev': {
+
+            // the server root directory
+            root: "build/",
+            port: 8081,
+            host: "127.0.0.1",
+
+            cache: 0,
+            showDir : true,
+            autoIndex: true,
+            ext: "html",
+
+            runInBackground: true,
+            logFn: function(req, res, error) { }
+
+        },
+        'prod': {
+
+            // the server root directory
+            root: "bin/",
+            port: 8081,
+            host: "127.0.0.1",
+
+            cache: 0,
+            showDir : true,
+            autoIndex: true,
+            ext: "html",
+
+            runInBackground: false,
+            logFn: function(req, res, error) { }
+
+        }
+
+
+    },
 
     /**
      * The directories to delete when `grunt clean` is executed.
      */
-    clean: [
-      '<%= build_dir %>',
-      '<%= compile_dir %>'
-    ],
+    clean: {
+        build: ['<%= build_dir %>'],
+        bin: ['<%= compile_dir %>'],
+        sass_build_tmp: ['<%= sass.build.files[0].dest %>',"<%= sass.build.files[0].dest %>.map"],
+        sass_compile_tmp: ['<%= sass.compile.files[0].dest %>',"<%= sass.compile.files[0].dest %>.map"]
+    },
 
     /**
      * The `copy` task just copies files from A to B. We use it here to copy
@@ -130,6 +178,16 @@ module.exports = function ( grunt ) {
           }
         ]
       },
+        build_vendorjs_phonegap: {
+            files: [
+                {
+                    src: [ '<%=phonegap_files.js %>' ],
+                    dest: '<%= build_dir %>/',
+                    cwd: '.',
+                    expand: true
+                }
+            ]
+        },
       compile_assets: {
         files: [
           {
@@ -151,6 +209,49 @@ module.exports = function ( grunt ) {
           ]
         }
     },
+      devcode :
+      {
+          options :
+          {
+              html: true,        // html files parsing?
+              js: true,          // javascript files parsing?
+              css: true,         // css files parsing?
+              clean: true,       // removes devcode comments even if code was not removed
+              block: {
+                  open: 'devcode', // with this string we open a block of code
+                  close: 'endcode' // with this string we close a block of code
+              },
+              dest: 'build'       // default destination which overwrittes environment variable
+          },
+          phonegap : {           // settings for task used with 'devcode:web'
+              options: {
+                  source: '<%= build_dir %>/',
+                  dest: '<%= build_dir %>/',
+                  env: 'phonegap'
+              }
+          },
+          phonegapprod : {           // settings for task used with 'devcode:web'
+              options: {
+                  source: 'bin/',
+                  dest: 'bin/',
+                  env: 'phonegap'
+              }
+          },
+          webdev: {
+              options: {
+                  source: '<%= build_dir %>/',
+                  dest: '<%= build_dir %>/',
+                  env: 'web'
+              }
+          },
+          webprod: {
+              options: {
+                  source: 'bin/',
+                  dest: 'bin/',
+                  env: 'web'
+              }
+          }
+      },
 
     /**
      * `grunt concat` concatenates multiple source files into a single file.
@@ -159,6 +260,7 @@ module.exports = function ( grunt ) {
       build_css: {
         src: [
           '<%= vendor_files.css %>',
+          '<%= sass.build.files[0].dest %>',
           '<%= less.build.dest %>'
         ],
         dest: '<%= less.build.dest %>'
@@ -173,8 +275,22 @@ module.exports = function ( grunt ) {
         },
         src: [
           '<%= vendor_files.js %>',
+          '<%= app_files.js %>',
           'module.prefix',
-          '<%= build_dir %>/src/**/*.js',
+          '<%= html2js.app.dest %>',
+          '<%= html2js.common.dest %>',
+          'module.suffix'
+        ],
+        dest: '<%= compile_dir %>/assets/<%= pkg.name %>-<%= pkg.version %>.js'
+      },
+      compile_js_phonegap: {
+        options: {
+          banner: '<%= meta.banner %>'
+        },
+        src: [
+          '<%= phonegap_files.js %>',
+          '<%= app_files.js %>',
+          'module.prefix',
           '<%= html2js.app.dest %>',
           '<%= html2js.common.dest %>',
           'module.suffix'
@@ -207,12 +323,27 @@ module.exports = function ( grunt ) {
     uglify: {
       compile: {
         options: {
-          banner: '<%= meta.banner %>'
+          banner: '<%= meta.banner %>',
+          mangle: false
         },
         files: {
           '<%= concat.compile_js.dest %>': '<%= concat.compile_js.dest %>'
         }
       }
+    },
+    sass: {
+	build: {
+            files: [{
+		src: [ '<%= app_files.sass %>' ],
+		dest: '<%= build_dir %>/assets/<%= pkg.name %>-<%= pkg.version %>-s.css'
+            }]
+        },
+	compile: {
+            files: [{
+		src: [ '<%= app_files.sass %>' ],
+		dest: '<%= compile_dir %>/assets/<%= pkg.name %>-<%= pkg.version %>-s.css'
+            }]
+        }
     },
 
     /**
@@ -233,8 +364,8 @@ module.exports = function ( grunt ) {
         }
       },
       compile: {
-        src: [ '<%= less.build.dest %>' ],
-        dest: '<%= less.build.dest %>',
+        src: [ '<%= app_files.less %>' ],
+        dest: '<%= compile_dir %>/assets/<%= pkg.name %>-<%= pkg.version %>.css',
         options: {
           compile: true,
           compress: true,
@@ -270,7 +401,8 @@ module.exports = function ( grunt ) {
         noarg: true,
         sub: true,
         boss: true,
-        eqnull: true
+        eqnull: true,
+        laxcomma : true
       },
       globals: {}
     },
@@ -343,6 +475,17 @@ module.exports = function ( grunt ) {
           '<%= less.build.dest %>'
         ]
       },
+      buildphonegap: {
+        dir: '<%= build_dir %>',
+        src: [
+          '<%= phonegap_files.js %>',
+          '<%= build_dir %>/src/**/*.js',
+          '<%= html2js.common.dest %>',
+          '<%= html2js.app.dest %>',
+          '<%= phonegap_files.css %>',
+          '<%= less.build.dest %>'
+        ]
+      },
 
       /**
        * When it is time to have a completely compiled application, we can
@@ -374,22 +517,23 @@ module.exports = function ( grunt ) {
         ]
       }
     },
-        /**
-        * Deploy build dir in S3
-        */
-        s3: {
-        options: {
-            accessKeyId: "<%= conf.aws.accessKeyId %>",
-            secretAccessKey: "<%= conf.aws.secretAccessKey %>",
-            cache: false,
-            access: "public-read",
-            bucket: "<%= conf.aws.bucket %>"
-        },
-        build: {
-            cwd: "build/",
-            src: "**"
-        }
-        },
+    /**
+    * Deploy build dir in S3
+    */
+    s3: {
+      options: {
+        accessKeyId: "<%= conf.aws.accessKeyId %>",
+        secretAccessKey: "<%= conf.aws.secretAccessKey %>",
+        cache: false,
+        access: "public-read",
+        region: "<%= conf.aws.region %>",
+        bucket: "<%= conf.aws.bucket %>"
+      },
+      build: {
+        cwd: "build/",
+        src: "**"
+      }
+    },
 
     /**
      * And for rapid development, we have a watch set up that checks to see if
@@ -423,6 +567,13 @@ module.exports = function ( grunt ) {
           livereload: false
         }
       },
+      appconf: {
+        files: ['configuration.json', "tpl/conf.tpl.js"],
+        tasks: [ 'appconf' ],
+        options: {
+          livereload: true
+        }
+      },
 
       /**
        * When our JavaScript source files change, we want to run lint them and
@@ -433,7 +584,7 @@ module.exports = function ( grunt ) {
           '<%= app_files.js %>',
           'src/i18n/**'
         ],
-        tasks: [ 'jshint:src', 'copy:build_appjs', 'copy:build_i18n' ]
+        tasks: [ 'jshint:src', 'copy:build_appjs', 'copy:build_i18n', "devcode:webdev"]
       },
 
       /**
@@ -472,6 +623,11 @@ module.exports = function ( grunt ) {
         files: [ 'src/**/**.less' ],
         tasks: [ 'less:build' ]
       },
+      sass: {
+        files: [ 'src/**/**.scss' ],
+        tasks: [ 'sass:build' ]
+      },
+
 
       /**
        * When a JavaScript unit test file changes, we only want to lint it and
@@ -485,9 +641,84 @@ module.exports = function ( grunt ) {
         options: {
           livereload: false
         }
-      }
+      },
+    },
+    shell: {
+        install: {
+            options: {
+            stderr: true
+            },
+            command: [
+            'adb install -r ./dist/app.apk'
+            ].join('&&')
+        },
+        androidLog: {
+            options: {
+            stderr: true
+            },
+            command: [
+            'adb logcat CordovaLog:* GCMBaseIntentService:* GCMBroadcastReceiver:*   PluginManager:* *:S'
+            ].join('&&')
+        }
+    },
+    compress: {
+        bin: {
+            options: {
+                archive: 'dist/upload.zip'
+            },
+            files: [
+                {src: ['config.xml'], dest: '.'},
+                {expand : true, cwd: 'bin/', src: ['**/*.*'], dest: '.'}
+            ]
 
-
+        },
+        build: {
+            options: {
+                archive: 'dist/upload_build.zip'
+            },
+            files: [
+                {src: ['config.xml'], dest: '.'},
+                {expand : true, cwd: 'build/', src: ['**/*.*'], dest: '.'}
+            ]
+        }
+    },
+    "phonegap-build": {
+        release: {
+            options: {
+            archive: "dist/upload.zip",
+            "appId": "<%=conf.phonegap.appId %>",
+            "user": {
+                "token": "<%=conf.phonegap.token %>"
+            },
+            keys: {
+                //ios: { "password": "<%=conf.phonegap.keys.ios.password %>" },
+                android: { "key_pw": "<%=conf.phonegap.keys.android.key_pw %>", "keystore_pw": "<%=conf.phonegap.keys.android.keystore_pw %>" }
+            },
+            download: {
+                //ios: './dist/app.ipa',
+                android: './dist/app.apk'
+            },
+            pollRate : 10
+            }
+        },
+        build: {
+            options: {
+            archive: "dist/upload_build.zip",
+            "appId": "<%=conf.phonegap.appId %>",
+            "user": {
+                "token": "<%=conf.phonegap.token %>"
+            },
+            keys: {
+                //ios: { "password": "<%=conf.phonegap.keys.ios.password %>" },
+                android: { "key_pw": "<%=conf.phonegap.keys.android.key_pw %>", "keystore_pw": "<%=conf.phonegap.keys.android.keystore_pw %>" }
+            },
+            download: {
+                //ios: './dist/app.ipa',
+                android: './dist/app.apk'
+            },
+            pollRate : 10
+            }
+        }
     }
   };
 
@@ -500,37 +731,39 @@ module.exports = function ( grunt ) {
    * `delta`) and then add a new task called `watch` that does a clean build
    * before watching for changes.
    */
-  grunt.renameTask( 'watch', 'delta' );
-  grunt.registerTask( 'watch', [ 'employee', 'delta' ] );
-  /**
-   * The default task is to build and compile.
-   */
+  grunt.renameTask( 'watch', 'delta');
+  grunt.registerTask( 'watch', [ 'web-employee', 'http-server:dev', 'delta'  ] );
   grunt.registerTask( 'default', [ 'build', 'compile' ] );
-
   grunt.registerTask( 'test', ['karmaconfig', 'karma:continuous']);
+  grunt.registerTask( 'build', ["appconf", 'web-employee', 'test']);
 
-  grunt.registerTask( 'build', ['employee', 'test']);
-
-  /**
-   * The `build` task gets your app ready to run for development and testing.
-   */
-  grunt.registerTask( 'employee', [
-    'clean', 'html2js', 'jshint', 'less:build',
-    'concat:build_css', 'copy:build_app_assets', 'copy:build_vendor_assets',
-    'copy:build_appjs', 'copy:build_i18n', 'copy:build_vendorjs', 'index:build'
-  ]);
-
-
-  /**
-   * The `compile` task gets your app ready for deployment by concatenating and
-   * minifying your code.
-   */
   grunt.registerTask( 'compile', [
-    'less:compile', 'copy:compile_assets','copy:compile_i18n', 'ngAnnotate', 'concat:compile_js', 'uglify', 'index:compile'
+    'clean:bin', 'html2js', 'jshint', 'copy:compile_assets','copy:compile_i18n', 'ngAnnotate',
+    'concat:compile_js', 'less:compile', 'sass:compile', 'clean:sass_compile_tmp', 'index:compile', 'devcode:webprod', 'uglify', 'http-server:prod'
+  ]);
+
+  grunt.registerTask( 'web-employee', [
+    'clean:build', 'html2js', 'jshint', 'less:build', 'sass:build', 'clean:sass_build_tmp',
+    'concat:build_css', 'copy:build_app_assets', 'copy:build_vendor_assets',
+    'copy:build_appjs', 'copy:build_i18n', 'copy:build_vendorjs', 'index:build',
+    'devcode:webdev'
+  ]);
+
+  grunt.registerTask( 'phonegapCompile', [
+    'clean:bin', 'html2js', 'jshint', 'copy:compile_assets','copy:compile_i18n', 'ngAnnotate',
+    'concat:compile_js_phonegap', 'less:compile', 'sass:compile', 'clean:sass_compile_tmp', 'index:compile', 'devcode:phonegap',
+    'uglify', 'compress:bin', "phonegap-build:release", "shell:install"
+  ]);
+
+  grunt.registerTask( 'phonegapBuild', [
+    'clean:build', 'html2js', 'jshint', 'less:build', 'sass:build', 'clean:sass_build_tmp',
+    'concat:build_css', 'copy:build_app_assets', 'copy:build_vendor_assets',
+    'copy:build_appjs', 'copy:build_i18n', 'copy:build_vendorjs_phonegap', 'index:buildphonegap',
+    'devcode:phonegap', 'compress:build', 'phonegap-build:build', "shell:install"
   ]);
 
   /**
-   * A utility function to get all app JavaScript sources.
+   * A utility functio"appconf"n to get all app JavaScript sources.
    */
   function filterForJS ( files ) {
     return files.filter( function ( file ) {
@@ -547,6 +780,17 @@ module.exports = function ( grunt ) {
     });
   }
 
+  grunt.registerTask("appconf", function() {
+    grunt.file.copy("tpl/conf.tpl.js", "src/conf.js",{
+      process: function ( contents, path ) {
+        return grunt.template.process( contents, {
+          data: {
+            config: taskConfig.conf
+          }
+        });
+      }
+    });
+  });
   /**
    * The index.html template includes the stylesheet and javascript sources
    * based on dynamic names calculated in this Gruntfile. This task assembles

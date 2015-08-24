@@ -20,12 +20,13 @@ module.exports = {
    * app's unit tests.
    */
   app_files: {
-    js: [ 'src/**/*.js', '!src/**/*.spec.js', '!src/assets/**/*.js' ],
+    js: [ 'src/**/*.js', 'src/conf.js',  '!src/**/*.spec.js', '!src/assets/**/*.js' ],
     jsunit: [ 'src/**/*.spec.js' ],
     atpl: [ 'src/app/**/*.tpl.html' ],
     ctpl: [ 'src/common/**/*.tpl.html' ],
     html: [ 'src/index.html' ],
-    less: ['src/less/main.less', 'src/app/**/*.less']
+    sass: ["src/sass/main.scss", "src/app/*/**/.scss"],
+    less: ['bower_components/angular-loading-bar/src/loading-bar.css', 'src/less/main.less', 'src/app/**/*.less']
   },
 
   /**
@@ -58,16 +59,78 @@ module.exports = {
    */
   vendor_files: {
     js: [
-         'bower_components/angular/angular.js',
-         'bower_components/jquery/dist/jquery.js',
-         'bower_components/bootstrap/dist/js/bootstrap.js',
-         'bower_components/angular-ui-router/release/angular-ui-router.js',
-         'bower_components/angular-ui-utils/modules/route/route.js',
-         'bower_components/angular-cookies/angular-cookies.js'
+      'bower_components/angular/angular.js',
+      'bower_components/jquery/dist/jquery.js',
+      'bower_components/bootstrap/dist/js/bootstrap.js',
+      'bower_components/angular-ui-router/release/angular-ui-router.js',
+      'bower_components/angular-bootstrap/ui-bootstrap.js',
+      'bower_components/angular-bootstrap/ui-bootstrap-tpls.js',
+      'bower_components/angular-loading-bar/build/loading-bar.js',
+      'bower_components/angular-ui-utils/modules/route/route.js',
+      'bower_components/angular-animate/angular-animate.js',
+      'bower_components/angular-sanitize/angular-sanitize.js',
+      'bower_components/angular-local-storage/dist/angular-local-storage.js',
+      'bower_components/angular-translate/angular-translate.js',
+      'bower_components/angular-translate-loader-static-files/angular-translate-loader-static-files.js',
+      'bower_components/satellizer/satellizer.js',
+      'bower_components/cr-loading/cr-loading.js',
+      'bower_components/cr-session/cr-session.js',
+      'bower_components/cr-remote/cr-remote.js',
+      'bower_components/cr-auth/cr-auth.js',
+      'bower_components/cr-acl/cr-acl.js',
+      'bower_components/angulartics/dist/angulartics.min.js',
+      'bower_components/angulartics/dist/angulartics-ga.min.js',
+      'bower_components/ngCordova/dist/ng-cordova.js',
+      'bower_components/ngInfiniteScroll/build/ng-infinite-scroll.js',
+      'bower_components/angular-touch/angular-touch.js'
     ],
     css: [
     ],
     assets: [
+      'bower_components/font-awesome/fonts/fontawesome-webfont.eot',
+      'bower_components/font-awesome/fonts/fontawesome-webfont.svg',
+      'bower_components/font-awesome/fonts/fontawesome-webfont.ttf',
+      'bower_components/font-awesome/fonts/fontawesome-webfont.woff',
+      'bower_components/font-awesome/fonts/fontawesome-webfont.woff2',
+      'bower_components/font-awesome/fonts/FontAwesome.otf',
     ]
   },
+  phonegap_files: {
+    js: [
+      'bower_components/angular/angular.js',
+      'bower_components/jquery/dist/jquery.js',
+      'bower_components/bootstrap/dist/js/bootstrap.js',
+      'bower_components/angular-ui-router/release/angular-ui-router.js',
+      'bower_components/angular-bootstrap/ui-bootstrap.js',
+      'bower_components/angular-bootstrap/ui-bootstrap-tpls.js',
+      'bower_components/angular-loading-bar/build/loading-bar.js',
+      'bower_components/angular-ui-utils/modules/route/route.js',
+      'bower_components/angular-animate/angular-animate.js',
+      'bower_components/angular-sanitize/angular-sanitize.js',
+      'bower_components/angular-local-storage/dist/angular-local-storage.js',
+      'bower_components/angular-translate/angular-translate.js',
+      'bower_components/angular-translate-loader-static-files/angular-translate-loader-static-files.js',
+      'bower_components/satellizer/satellizer.js',
+      'bower_components/cr-loading/cr-loading.js',
+      'bower_components/cr-session/cr-session.js',
+      'bower_components/cr-remote/cr-remote.js',
+      'bower_components/cr-auth/cr-auth.js',
+      'bower_components/cr-acl/cr-acl.js',
+      'bower_components/angulartics/dist/angulartics.min.js',
+      'bower_components/angulartics/dist/angulartics-ga.min.js',
+      'bower_components/ngCordova/dist/ng-cordova.js',
+      'bower_components/ngInfiniteScroll/build/ng-infinite-scroll.js',
+      'bower_components/angular-touch/angular-touch.js'
+    ],
+    css: [
+    ],
+    assets: [
+      'bower_components/font-awesome/fonts/fontawesome-webfont.eot',
+      'bower_components/font-awesome/fonts/fontawesome-webfont.svg',
+      'bower_components/font-awesome/fonts/fontawesome-webfont.ttf',
+      'bower_components/font-awesome/fonts/fontawesome-webfont.woff',
+      'bower_components/font-awesome/fonts/fontawesome-webfont.woff2',
+      'bower_components/font-awesome/fonts/FontAwesome.otf',
+    ]
+  }
 };
