@@ -19,7 +19,6 @@
     "angular-local-storage": "0.1.5",
     "satellizer": "master",
     "cr-remote": "master",
-    "cr-auth": "master",
     "cr-session": "master",
     "cr-loading": "master",
     "cr-aws": "master",

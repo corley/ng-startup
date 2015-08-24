@@ -21,7 +21,6 @@ angular.module(
             'ng-startup.signin',
             'ng-startup.remote',
             'cr.remote',
-            // 'cr.auth',
             'cr.loading',
             'cr.session',
             'cr.acl',
