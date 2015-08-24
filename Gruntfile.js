@@ -9,6 +9,7 @@ module.exports = function ( grunt ) {
   grunt.loadNpmTasks('grunt-bump');
   grunt.loadNpmTasks('grunt-aws');
   grunt.loadNpmTasks('grunt-contrib-less');
+  grunt.loadNpmTasks('grunt-contrib-sass');
   grunt.loadNpmTasks('grunt-shell');
   grunt.loadNpmTasks('grunt-karma');
   grunt.loadNpmTasks('grunt-devcode');
@@ -115,7 +116,9 @@ module.exports = function ( grunt ) {
      */
     clean: {
         build: ['<%= build_dir %>'],
-        bin: ['<%= compile_dir %>']
+        bin: ['<%= compile_dir %>'],
+        sass_build_tmp: ['<%= sass.build.files[0].dest %>',"<%= sass.build.files[0].dest %>.map"],
+        sass_compile_tmp: ['<%= sass.compile.files[0].dest %>',"<%= sass.compile.files[0].dest %>.map"]
     },
 
     /**
@@ -257,6 +260,7 @@ module.exports = function ( grunt ) {
       build_css: {
         src: [
           '<%= vendor_files.css %>',
+          '<%= sass.build.files[0].dest %>',
           '<%= less.build.dest %>'
         ],
         dest: '<%= less.build.dest %>'
@@ -326,6 +330,20 @@ module.exports = function ( grunt ) {
           '<%= concat.compile_js.dest %>': '<%= concat.compile_js.dest %>'
         }
       }
+    },
+    sass: {
+	build: {
+            files: [{
+		src: [ '<%= app_files.sass %>' ],
+		dest: '<%= build_dir %>/assets/<%= pkg.name %>-<%= pkg.version %>-s.css'
+            }]
+        },
+	compile: {
+            files: [{
+		src: [ '<%= app_files.sass %>' ],
+		dest: '<%= compile_dir %>/assets/<%= pkg.name %>-<%= pkg.version %>-s.css'
+            }]
+        }
     },
 
     /**
@@ -605,6 +623,11 @@ module.exports = function ( grunt ) {
         files: [ 'src/**/**.less' ],
         tasks: [ 'less:build' ]
       },
+      sass: {
+        files: [ 'src/**/**.scss' ],
+        tasks: [ 'sass:build' ]
+      },
+
 
       /**
        * When a JavaScript unit test file changes, we only want to lint it and
@@ -716,26 +739,24 @@ module.exports = function ( grunt ) {
 
   grunt.registerTask( 'compile', [
     'clean:bin', 'html2js', 'jshint', 'copy:compile_assets','copy:compile_i18n', 'ngAnnotate',
-    'concat:compile_js', 'less:compile', 'index:compile', 'devcode:webprod', 'uglify', 'http-server:prod'
+    'concat:compile_js', 'less:compile', 'sass:compile', 'clean:sass_compile_tmp', 'index:compile', 'devcode:webprod', 'uglify', 'http-server:prod'
   ]);
 
   grunt.registerTask( 'web-employee', [
-    'clean:build', 'html2js', 'jshint', 'less:build',
+    'clean:build', 'html2js', 'jshint', 'less:build', 'sass:build', 'clean:sass_build_tmp',
     'concat:build_css', 'copy:build_app_assets', 'copy:build_vendor_assets',
     'copy:build_appjs', 'copy:build_i18n', 'copy:build_vendorjs', 'index:build',
     'devcode:webdev'
   ]);
 
-
-
   grunt.registerTask( 'phonegapCompile', [
     'clean:bin', 'html2js', 'jshint', 'copy:compile_assets','copy:compile_i18n', 'ngAnnotate',
-    'concat:compile_js_phonegap', 'less:compile', 'index:compile', 'devcode:phonegap',
+    'concat:compile_js_phonegap', 'less:compile', 'sass:compile', 'clean:sass_compile_tmp', 'index:compile', 'devcode:phonegap',
     'uglify', 'compress:bin', "phonegap-build:release", "shell:install"
   ]);
 
   grunt.registerTask( 'phonegapBuild', [
-    'clean:build', 'html2js', 'jshint', 'less:build',
+    'clean:build', 'html2js', 'jshint', 'less:build', 'sass:build', 'clean:sass_build_tmp',
     'concat:build_css', 'copy:build_app_assets', 'copy:build_vendor_assets',
     'copy:build_appjs', 'copy:build_i18n', 'copy:build_vendorjs_phonegap', 'index:buildphonegap',
     'devcode:phonegap', 'compress:build', 'phonegap-build:build', "shell:install"

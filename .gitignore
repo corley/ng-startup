@@ -1,6 +1,7 @@
 *~
 build/
 plugins
+.sass-cache/
 www
 platforms
 bin/
