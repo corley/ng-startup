@@ -38,8 +38,10 @@ angular.module( 'ng-startup.signin', ['ui.router.state'])
 /**
  * Signout controller
  */
-.controller( 'SignoutCtrl', ['$rootScope', '$scope', '$state', function SigninController( $rootScope, $scope, $state ) {
-	$rootScope.$broadcast("auth:logout:success");
+.controller( 'SignoutCtrl', ['$rootScope', '$scope', '$state', '$auth', function SigninController( $rootScope, $scope, $state, $auth ) {
+	$auth.logout().then(function() {
+		$rootScope.$broadcast("auth:logout:success");
+	});
 
 }])
 ;

@@ -8,7 +8,7 @@ angular.module( 'ng-startup.dashboard', ['ui.router.state'])
 				templateUrl: 'dashboard/dashboard.tpl.html'
 			}
 		},
-		data:{ pageTitle: 'Dashboard', is_granted:['ROLE_USER'] }
+		data:{ pageTitle: 'Dashboard'/*, is_granted:['ROLE_USER'] */}
 	});
 
 })
