@@ -550,7 +550,7 @@ module.exports = function ( grunt ) {
         }
       },
       appconf: {
-        files: 'configuration.json',
+        files: ['configuration.json', "tpl/conf.tpl.js"],
         tasks: [ 'appconf' ],
         options: {
           livereload: true
