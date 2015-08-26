@@ -9,8 +9,7 @@
     "url": ""
   },
   "scripts": {
-    "postinstall": "cp configuration.json.dist configuration.json && bower install",
-    "postiupdate": "bower update"
+    "postinstall": "cp configuration.json.dist configuration.json && bower install"
   },
   "devDependencies": {
     "grunt": "~0.4.1",
