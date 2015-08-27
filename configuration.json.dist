@@ -9,5 +9,13 @@
       "secretAccessKey": "",
       "bucket": "",
       "region": ""
+  },
+  "phonegap": {
+      "appId": "",
+      "token": "",
+       "keys": {
+          "ios": { "password": "" },
+          "android": { "key_pw": "", "keystore_pw": "" }
+      }
   }
 }
