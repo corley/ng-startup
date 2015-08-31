@@ -18,7 +18,7 @@ module.exports = function ( grunt ) {
   grunt.loadNpmTasks('grunt-html2js');
   grunt.loadNpmTasks('grunt-http-server');
 
-  var userConfig = require( './build.config.js' );
+  var userConfig = require( './config/build.config.js' );
 
   /**
    * This is the configuration object Grunt uses to give each plugin its
@@ -31,7 +31,7 @@ module.exports = function ( grunt ) {
      */
     pkg: grunt.file.readJSON("package.json"),
 
-    conf: grunt.file.readJSON("configuration.json"),
+    conf: grunt.file.readJSON("./config/configuration.json"),
 
     /**
      * The banner is the comment that is placed at the top of our compiled
@@ -78,7 +78,7 @@ module.exports = function ( grunt ) {
         'dev': {
 
             // the server root directory
-            root: "build/",
+            root: "<%= build_dir %>",
             port: 8081,
             host: "127.0.0.1",
 
@@ -94,7 +94,7 @@ module.exports = function ( grunt ) {
         'prod': {
 
             // the server root directory
-            root: "bin/",
+            root: "<%= compile_dir %>",
             port: 8081,
             host: "127.0.0.1",
 
@@ -118,7 +118,8 @@ module.exports = function ( grunt ) {
         build: ['<%= build_dir %>'],
         bin: ['<%= compile_dir %>'],
         sass_build_tmp: ['<%= sass.build.files[0].dest %>',"<%= sass.build.files[0].dest %>.map"],
-        sass_compile_tmp: ['<%= sass.compile.files[0].dest %>',"<%= sass.compile.files[0].dest %>.map"]
+        sass_compile_tmp: ['<%= sass.compile.files[0].dest %>',"<%= sass.compile.files[0].dest %>.map"],
+        templates:['dist/templates-app.js', 'dist/templates-common.js']
     },
 
     /**
@@ -178,16 +179,16 @@ module.exports = function ( grunt ) {
           }
         ]
       },
-        build_vendorjs_phonegap: {
-            files: [
-                {
-                    src: [ '<%=phonegap_files.js %>' ],
-                    dest: '<%= build_dir %>/',
-                    cwd: '.',
-                    expand: true
-                }
-            ]
-        },
+      build_vendorjs_phonegap: {
+          files: [
+              {
+                  src: [ '<%=phonegap_files.js %>' ],
+                  dest: '<%= build_dir %>/',
+                  cwd: '.',
+                  expand: true
+              }
+          ]
+      },
       compile_assets: {
         files: [
           {
@@ -199,15 +200,41 @@ module.exports = function ( grunt ) {
         ]
       },
       compile_i18n: {
-          files: [
-            {
-              src: [ '**' ],
-              dest: '<%= compile_dir %>/i18n/',
-              cwd: 'src/i18n',
-              expand: true
-            }
-          ]
-        }
+        files: [
+          {
+            src: [ '**' ],
+            dest: '<%= compile_dir %>/i18n/',
+            cwd: 'src/i18n',
+            expand: true
+          }
+        ]
+      },
+      build_phonegap_config: {
+        files: [
+          {
+            src: [ 'phonegap.config.xml' ],
+            dest: '<%= build_dir %>/',
+            cwd: 'config/',
+            rename: function(dest, src) {
+              return dest + 'config.xml';
+            },
+            expand: true
+          }
+        ]
+      },
+      compile_phonegap_config: {
+        files: [
+          {
+            src: [ 'phonegap.config.xml' ],
+            dest: '<%= compile_dir %>/',
+            cwd: 'config/',
+            rename: function(dest, src) {
+              return dest + 'config.xml';
+            },
+            expand: true
+          }
+        ]
+      }
     },
       devcode :
       {
@@ -232,8 +259,8 @@ module.exports = function ( grunt ) {
           },
           phonegapprod : {           // settings for task used with 'devcode:web'
               options: {
-                  source: 'bin/',
-                  dest: 'bin/',
+                  source: '<%= compile_dir %>/',
+                  dest: '<%= compile_dir %>/',
                   env: 'phonegap'
               }
           },
@@ -246,9 +273,31 @@ module.exports = function ( grunt ) {
           },
           webprod: {
               options: {
-                  source: 'bin/',
-                  dest: 'bin/',
+                  source: '<%= compile_dir %>/',
+                  dest: '<%= compile_dir %>/',
                   env: 'web'
+              }
+          },
+          build: {
+              options: {
+                  source: '<%= build_dir %>/',
+                  dest: '<%= build_dir %>/',
+                  env: 'build',
+                  block: {
+                      open: 'env',
+                      close: 'endenv'
+                  },
+              }
+          },
+          compile: {
+              options: {
+                  source: '<%= compile_dir %>/',
+                  dest: '<%= compile_dir %>/',
+                  env: 'compile',
+                  block: {
+                      open: 'env',
+                      close: 'endenv'
+                  },
               }
           }
       },
@@ -276,10 +325,10 @@ module.exports = function ( grunt ) {
         src: [
           '<%= vendor_files.js %>',
           '<%= app_files.js %>',
-          'module.prefix',
+          'config/module.prefix',
           '<%= html2js.app.dest %>',
           '<%= html2js.common.dest %>',
-          'module.suffix'
+          'config/module.suffix'
         ],
         dest: '<%= compile_dir %>/assets/<%= pkg.name %>-<%= pkg.version %>.js'
       },
@@ -290,10 +339,10 @@ module.exports = function ( grunt ) {
         src: [
           '<%= phonegap_files.js %>',
           '<%= app_files.js %>',
-          'module.prefix',
+          'config/module.prefix',
           '<%= html2js.app.dest %>',
           '<%= html2js.common.dest %>',
-          'module.suffix'
+          'config/module.suffix'
         ],
         dest: '<%= compile_dir %>/assets/<%= pkg.name %>-<%= pkg.version %>.js'
       }
@@ -414,27 +463,27 @@ module.exports = function ( grunt ) {
      * part of the initial payload as one JavaScript file. Neat!
      */
     html2js: {
-      /**
-       * These are the templates from `src/app`.
-       */
-      app: {
-        options: {
-          base: 'src/app'
+        /**
+         * These are the templates from `src/app`.
+         */
+        app: {
+          options: {
+            base: 'src/app'
+          },
+          src: [ '<%= app_files.atpl %>' ],
+          dest: 'dist/templates-app.js'
         },
-        src: [ '<%= app_files.atpl %>' ],
-        dest: '<%= build_dir %>/templates-app.js'
-      },
 
-      /**
-       * These are the templates from `src/common`.
-       */
-      common: {
-        options: {
-          base: 'src/common'
-        },
-        src: [ '<%= app_files.ctpl %>' ],
-        dest: '<%= build_dir %>/templates-common.js'
-      }
+        /**
+         * These are the templates from `src/common`.
+         */
+        common: {
+          options: {
+            base: 'src/common'
+          },
+          src: [ '<%= app_files.ctpl %>' ],
+          dest: 'dist/templates-common.js'
+        }
     },
 
     /**
@@ -442,7 +491,7 @@ module.exports = function ( grunt ) {
     */
     karma: {
       options: {
-        configFile: '<%= build_dir %>/karma-unit.js'
+        configFile: '<%= base_dir %>/<%= stage %>/<%= env %>/karma-unit.js'
       },
       unit: {
         runnerPort: 9101,
@@ -508,7 +557,7 @@ module.exports = function ( grunt ) {
      */
     karmaconfig: {
       unit: {
-        dir: '<%= build_dir %>',
+        dir: '<%= base_dir %>/<%= stage %>/<%= env %>',
         src: [
           '<%= vendor_files.js %>',
           '<%= html2js.app.dest %>',
@@ -530,7 +579,7 @@ module.exports = function ( grunt ) {
         bucket: "<%= conf.aws.bucket %>"
       },
       build: {
-        cwd: "build/",
+        cwd: "<%= build_dir %>/",
         src: "**"
       }
     },
@@ -568,7 +617,7 @@ module.exports = function ( grunt ) {
         }
       },
       appconf: {
-        files: ['configuration.json', "tpl/conf.tpl.js"],
+        files: ['configuration.json', "config/app.config.tpl.js"],
         tasks: [ 'appconf' ],
         options: {
           livereload: true
@@ -613,7 +662,7 @@ module.exports = function ( grunt ) {
           '<%= app_files.atpl %>',
           '<%= app_files.ctpl %>'
         ],
-        tasks: [ 'html2js' ]
+        tasks: [ 'html2js:build' ]
       },
 
       /**
@@ -664,11 +713,11 @@ module.exports = function ( grunt ) {
     compress: {
         bin: {
             options: {
-                archive: 'dist/upload.zip'
+                archive: 'dist/upload_compile.zip'
             },
             files: [
-                {src: ['config.xml'], dest: '.'},
-                {expand : true, cwd: 'bin/', src: ['**/*.*'], dest: '.'}
+                //{src: ['config.xml'], dest: '.', cwd:'./config/'},
+                {expand : true, cwd: '<%= compile_dir %>/', src: ['**/*.*'], dest: '.'}
             ]
 
         },
@@ -677,8 +726,8 @@ module.exports = function ( grunt ) {
                 archive: 'dist/upload_build.zip'
             },
             files: [
-                {src: ['config.xml'], dest: '.'},
-                {expand : true, cwd: 'build/', src: ['**/*.*'], dest: '.'}
+                //{src: ['config/config.xml'], dest: '.'},
+                {expand : true, cwd: '<%= build_dir %>/', src: ['**/*.*'], dest: '.'}
             ]
         }
     },
@@ -691,11 +740,11 @@ module.exports = function ( grunt ) {
                 "token": "<%=conf.phonegap.token %>"
             },
             keys: {
-                //ios: { "password": "<%=conf.phonegap.keys.ios.password %>" },
+                ios: { "password": "<%=conf.phonegap.keys.ios.password %>" },
                 android: { "key_pw": "<%=conf.phonegap.keys.android.key_pw %>", "keystore_pw": "<%=conf.phonegap.keys.android.keystore_pw %>" }
             },
             download: {
-                //ios: './dist/app.ipa',
+                ios: './dist/app.ipa',
                 android: './dist/app.apk'
             },
             pollRate : 10
@@ -722,6 +771,19 @@ module.exports = function ( grunt ) {
     }
   };
 
+  grunt.registerTask("set_env", function(data) {
+    userConfig.env = data;
+    userConfig.build_dir = userConfig.build_dir + "/" + data;
+    userConfig.compile_dir = userConfig.compile_dir + "/" + data;
+    grunt.initConfig( grunt.util._.extend( taskConfig, userConfig ) );
+    grunt.log.debug(grunt.config());
+
+  });
+  grunt.registerTask("set_stage", function(data) {
+    userConfig.stage = data;
+    grunt.initConfig( grunt.util._.extend( taskConfig, userConfig ) );
+  });
+
   grunt.initConfig( grunt.util._.extend( taskConfig, userConfig ) );
 
   /**
@@ -732,35 +794,43 @@ module.exports = function ( grunt ) {
    * before watching for changes.
    */
   grunt.renameTask( 'watch', 'delta');
-  grunt.registerTask( 'watch', [ 'web-employee', 'http-server:dev', 'delta'  ] );
-  grunt.registerTask( 'default', [ 'build', 'compile' ] );
-  grunt.registerTask( 'test', ['karmaconfig', 'karma:continuous']);
-  grunt.registerTask( 'build', ["appconf", 'web-employee', 'test']);
+  grunt.registerTask( 'watch:web', [ 'appconf', 'set_env:web', 'web-employee', 'http-server:dev', 'delta' ] );
+  grunt.registerTask( 'watch:mobile', [ 'appconf', 'set_env:mobile', 'mobile-employee', 'http-server:dev', 'delta' ] );
+  grunt.registerTask( 'test:web', [ 'appconf', 'set_env:web', 'set_stage:build', 'karmaconfig', 'karma:continuous' ] );
+  grunt.registerTask( 'test:mobile', [ 'appconf', 'set_env:mobile', 'set_stage:build', 'karmaconfig', 'karma:continuous' ] );
+  // grunt.registerTask( 'default', [ 'build', 'compile' ] );
+  // grunt.registerTask( 'test', ['karmaconfig', 'karma:continuous']);
+  grunt.registerTask( 'build:web',      ['appconf', 'set_env:web','set_stage:build', 'web-employee', 'karmaconfig', 'karma:continuous']);
+  grunt.registerTask( 'build:mobile',      ['appconf', 'set_env:mobile','set_stage:build', 'mobile-employee', 'karmaconfig', 'karma:continuous', 'phonegap-build:build', 'shell:install']);
+  grunt.registerTask( 'compile:web',    ['appconf', 'set_env:web','set_stage:compile', 'web-release', 'karmaconfig', 'karma:continuous', 'http-server:prod']);
+  grunt.registerTask( 'compile:mobile', ['appconf', 'set_env:mobile','set_stage:compile', 'mobile-release', 'karmaconfig', 'karma:continuous', "phonegap-build:release", "shell:install"]);
 
-  grunt.registerTask( 'compile', [
+
+  grunt.registerTask( 'web-release', [
     'clean:bin', 'html2js', 'jshint', 'copy:compile_assets','copy:compile_i18n', 'ngAnnotate',
-    'concat:compile_js', 'less:compile', 'sass:compile', 'clean:sass_compile_tmp', 'index:compile', 'devcode:webprod', 'uglify', 'http-server:prod'
+    'concat:compile_js', 'clean:templates', 'less:compile', /*'sass:compile', 'clean:sass_compile_tmp',*/ 'index:compile', 'devcode:webprod', 'devcode:compile', 'uglify',
   ]);
 
   grunt.registerTask( 'web-employee', [
-    'clean:build', 'html2js', 'jshint', 'less:build', 'sass:build', 'clean:sass_build_tmp',
+    'clean:build', 'html2js', 'jshint', 'less:build', /*'sass:build', 'clean:sass_build_tmp',*/
     'concat:build_css', 'copy:build_app_assets', 'copy:build_vendor_assets',
-    'copy:build_appjs', 'copy:build_i18n', 'copy:build_vendorjs', 'index:build',
-    'devcode:webdev'
+    'copy:build_appjs', 'copy:build_i18n', 'copy:build_vendorjs', 'clean:templates', 'index:build',
+    'devcode:webdev', 'devcode:build'
   ]);
 
-  grunt.registerTask( 'phonegapCompile', [
+  grunt.registerTask( 'mobile-release', [
     'clean:bin', 'html2js', 'jshint', 'copy:compile_assets','copy:compile_i18n', 'ngAnnotate',
-    'concat:compile_js_phonegap', 'less:compile', 'sass:compile', 'clean:sass_compile_tmp', 'index:compile', 'devcode:phonegap',
-    'uglify', 'compress:bin', "phonegap-build:release", "shell:install"
+    'concat:compile_js_phonegap', 'less:compile', /*'sass:compile', 'clean:sass_compile_tmp',*/ 'index:compile',
+    'devcode:phonegap', 'devcode:compile', 'uglify', 'copy:compile_phonegap_config', 'compress:bin', 'clean:templates'
   ]);
 
-  grunt.registerTask( 'phonegapBuild', [
-    'clean:build', 'html2js', 'jshint', 'less:build', 'sass:build', 'clean:sass_build_tmp',
+  grunt.registerTask( 'mobile-employee', [
+    'clean:build', 'html2js', 'jshint', 'less:build', /*'sass:build', 'clean:sass_build_tmp',*/
     'concat:build_css', 'copy:build_app_assets', 'copy:build_vendor_assets',
     'copy:build_appjs', 'copy:build_i18n', 'copy:build_vendorjs_phonegap', 'index:buildphonegap',
-    'devcode:phonegap', 'compress:build', 'phonegap-build:build', "shell:install"
+    'devcode:phonegap', 'devcode:build', 'copy:build_phonegap_config', 'compress:build', 'clean:templates'
   ]);
+
 
   /**
    * A utility functio"appconf"n to get all app JavaScript sources.
@@ -781,7 +851,7 @@ module.exports = function ( grunt ) {
   }
 
   grunt.registerTask("appconf", function() {
-    grunt.file.copy("tpl/conf.tpl.js", "src/conf.js",{
+    grunt.file.copy("config/app.config.tpl.js", "src/conf.js",{
       process: function ( contents, path ) {
         return grunt.template.process( contents, {
           data: {
@@ -824,9 +894,13 @@ module.exports = function ( grunt ) {
    * run, we use grunt to manage the list for us. The `karma/*` files are
    * compiled as grunt templates for use by Karma. Yay!
    */
-  grunt.registerMultiTask( 'karmaconfig', 'Process karma config templates', function () {
+  grunt.registerMultiTask( 'karmaconfig', "karma configuration", function (type) {
+    var folder = 'build_dir';
+    if(grunt.config( 'stage' ) == "compile") {
+      folder = 'compile_dir';
+    }
     var jsFiles = filterForJS( this.filesSrc );
-    grunt.file.copy( 'karma/karma-unit.tpl.js', grunt.config( 'build_dir' ) + '/karma-unit.js', {
+    grunt.file.copy( 'config/karma-unit.tpl.js', grunt.config( folder ) + '/karma-unit.js', {
       process: function ( contents, path ) {
         return grunt.template.process( contents, {
           data: {

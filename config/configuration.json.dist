@@ -1,9 +1,4 @@
 {
-  "app": {
-    "debug": true,
-    "endPoint": "http://rest.test.corley.it/",
-    "defaultLanguage": "en_EN"
-  },
   "aws": {
       "accessKeyId":  "",
       "secretAccessKey": "",

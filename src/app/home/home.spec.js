@@ -11,4 +11,3 @@ describe( 'home section', function() {
     expect( true ).toBeTruthy();
   }));
 });
-
