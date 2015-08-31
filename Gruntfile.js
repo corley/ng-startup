@@ -806,13 +806,18 @@ module.exports = function ( grunt ) {
   grunt.registerTask( 'compile:mobile', ['appconf', 'set_env:mobile','set_stage:compile', 'mobile-release', 'karmaconfig', 'karma:continuous', "phonegap-build:release", "shell:install"]);
 
 
+  // grunt.registerTask( 'use-less-build', ['less:build']);
+  // grunt.registerTask( 'use-less-compile', ['less:compile']);
+  // grunt.registerTask( 'use-sass-build', ['sass:build', 'clean:sass_build_tmp']);
+  // grunt.registerTask( 'use-sass-compile', ['sass:compile', 'clean:sass_compile_tmp']);
+
   grunt.registerTask( 'web-release', [
     'clean:bin', 'html2js', 'jshint', 'copy:compile_assets','copy:compile_i18n', 'ngAnnotate',
-    'concat:compile_js', 'clean:templates', 'less:compile', /*'sass:compile', 'clean:sass_compile_tmp',*/ 'index:compile', 'devcode:webprod', 'devcode:compile', 'uglify',
+    'concat:compile_js', 'clean:templates', 'cssparser', 'clean:sass_compile_tmp', 'index:compile', 'devcode:webprod', 'devcode:compile', 'uglify',
   ]);
 
   grunt.registerTask( 'web-employee', [
-    'clean:build', 'html2js', 'jshint', 'less:build', /*'sass:build', 'clean:sass_build_tmp',*/
+    'clean:build', 'html2js', 'jshint', 'cssparser', 'clean:sass_build_tmp',
     'concat:build_css', 'copy:build_app_assets', 'copy:build_vendor_assets',
     'copy:build_appjs', 'copy:build_i18n', 'copy:build_vendorjs', 'clean:templates', 'index:build',
     'devcode:webdev', 'devcode:build'
@@ -820,12 +825,12 @@ module.exports = function ( grunt ) {
 
   grunt.registerTask( 'mobile-release', [
     'clean:bin', 'html2js', 'jshint', 'copy:compile_assets','copy:compile_i18n', 'ngAnnotate',
-    'concat:compile_js_phonegap', 'less:compile', /*'sass:compile', 'clean:sass_compile_tmp',*/ 'index:compile',
+    'concat:compile_js_phonegap', 'cssparser', 'clean:sass_compile_tmp', 'index:compile',
     'devcode:phonegap', 'devcode:compile', 'uglify', 'copy:compile_phonegap_config', 'compress:bin', 'clean:templates'
   ]);
 
   grunt.registerTask( 'mobile-employee', [
-    'clean:build', 'html2js', 'jshint', 'less:build', /*'sass:build', 'clean:sass_build_tmp',*/
+    'clean:build', 'html2js', 'jshint', 'cssparser', 'clean:sass_build_tmp',
     'concat:build_css', 'copy:build_app_assets', 'copy:build_vendor_assets',
     'copy:build_appjs', 'copy:build_i18n', 'copy:build_vendorjs_phonegap', 'index:buildphonegap',
     'devcode:phonegap', 'devcode:build', 'copy:build_phonegap_config', 'compress:build', 'clean:templates'
@@ -850,6 +855,20 @@ module.exports = function ( grunt ) {
     });
   }
 
+
+
+  grunt.registerTask("cssparser", function() {
+    grunt.task.run(grunt.config('css_parser') + ":" + grunt.config('stage'));
+    grunt.file.copy("config/app.config.tpl.js", "src/conf.js",{
+      process: function ( contents, path ) {
+        return grunt.template.process( contents, {
+          data: {
+            config: taskConfig.conf
+          }
+        });
+      }
+    });
+  });
   grunt.registerTask("appconf", function() {
     grunt.file.copy("config/app.config.tpl.js", "src/conf.js",{
       process: function ( contents, path ) {

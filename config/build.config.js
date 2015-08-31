@@ -10,6 +10,7 @@ module.exports = {
   base_dir: 'dist/',
   build_dir: 'dist/build',
   compile_dir: 'dist/compile'  ,
+  css_parser: 'less',
 
   /**
    * This is a collection of file patterns that refer to our app code (the
