@@ -1,34 +1,27 @@
 <!DOCTYPE html>
 <html ng-app="ng-startup" ng-controller="AppCtrl">
-<head>
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title ng-bind="pageTitle"></title>
+  <head>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title ng-bind="_state.data.pageTitle"></title>
 
+    <!-- compiled CSS -->
+    <% styles.forEach( function ( file ) { %>
+    <link rel="stylesheet" type="text/css" href="<%= file %>" />
+    <% }); %>
 
-<!-- compiled CSS -->
-<% styles.forEach( function ( file ) { %>
-<link rel="stylesheet" type="text/css" href="<%= file %>" />
-<% }); %>
+    <!-- compiled JavaScript -->
+    <% scripts.forEach( function ( file ) { %>
+    <script type="text/javascript" src="<%= file %>"></script>
+    <% }); %>
 
-<!-- compiled JavaScript -->
-
-<% scripts.forEach( function ( file ) { %>
-<script type="text/javascript" src="<%= file %>"></script>
-<% }); %>
-
-
-
-<!-- devcode: phonegap -->
-<script type="text/javascript" src="cordova.js"></script>
-<!-- endcode -->
-
-</head>
-<body>
-
-    <header username="_identity.auth.username" ng-hide="hideHeader"></header>
-
-    <div class="container">
-        <div ui-view="main" class="fading-view" ></div>
-    </div>
-</body>
+    <!-- devcode: phonegap -->
+    <script type="text/javascript" src="cordova.js"></script>
+    <!-- endcode -->
+  </head>
+  <body>
+      <header username="_identity.auth.username" ng-hide="hideHeader"></header>
+      <div class="container">
+          <div ui-view="main" class="fading-view" ></div>
+      </div>
+  </body>
 </html>

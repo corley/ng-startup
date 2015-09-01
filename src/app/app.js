@@ -19,7 +19,7 @@ angular.module(
             'ng-startup.home',
             'ng-startup.dashboard',
             'ng-startup.signin',
-            'ng-startup.remote',
+            'ng-startup.layout',
             'cr.remote',
             'cr.loading',
             'cr.session',
@@ -79,9 +79,6 @@ function run($rootScope, crAcl, crSession, crRemoteHttp, crIdentity, $state, $lo
     crIdentity.restore().then(function(identity) {
 
     });
-    // $rootScope.$on('auth:restore:success', function(event, data) {
-    //
-    // });
 
     //what append on user logout
     $rootScope.$on("auth:purge:success", function(event, data){
@@ -96,6 +93,7 @@ function run($rootScope, crAcl, crSession, crRemoteHttp, crIdentity, $state, $lo
 
 
     $scope.$on('$stateChangeSuccess', function(event, toState, toParams, fromState, fromParams) {
+        $rootScope._state = toState;
         cfpLoadingBar.complete();
         //switch on/off black design
 

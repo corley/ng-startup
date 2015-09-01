@@ -27,13 +27,6 @@ angular.module( 'ng-startup.home', ['ui.router.state'])
  */
 .controller( 'HomeCtrl', ['$scope', '$stateParams', function HomeController( $scope, $stateParams ) {
 
-	// devcode: phonegap
-	alert(2);
-	// endcode
-	// devcode: web
-	alert(1);
-	// endcode
-
 
 }])
 /**
