@@ -2,14 +2,13 @@
   "author": "Corley",
   "name": "ng-startup",
   "version": "0.1.0",
-  "homepage": "http://www.corley.it",
+  "homepage": "http://ngstartup.corleycloud.com",
   "repository": {},
   "licenses": {
-    "type": "Reserved",
-    "url": ""
+    "type": "MIT"
   },
   "scripts": {
-    "postinstall": "cp config/configuration.json.dist config/configuration.json && bower install"
+    "postinstall": "cp config/secret.json.dist config/secret.json && bower install"
   },
   "devDependencies": {
     "grunt": "~0.4.1",

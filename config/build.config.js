@@ -88,14 +88,15 @@ module.exports = {
     ],
     css: [
     ],
-    assets: [
+    fonts: [
       'bower_components/font-awesome/fonts/fontawesome-webfont.eot',
       'bower_components/font-awesome/fonts/fontawesome-webfont.svg',
       'bower_components/font-awesome/fonts/fontawesome-webfont.ttf',
       'bower_components/font-awesome/fonts/fontawesome-webfont.woff',
       'bower_components/font-awesome/fonts/fontawesome-webfont.woff2',
       'bower_components/font-awesome/fonts/FontAwesome.otf',
-    ]
+    ],
+    assets: []
   },
   phonegap_files: {
     js: [
@@ -126,13 +127,14 @@ module.exports = {
     ],
     css: [
     ],
-    assets: [
+    fonts: [
       'bower_components/font-awesome/fonts/fontawesome-webfont.eot',
       'bower_components/font-awesome/fonts/fontawesome-webfont.svg',
       'bower_components/font-awesome/fonts/fontawesome-webfont.ttf',
       'bower_components/font-awesome/fonts/fontawesome-webfont.woff',
       'bower_components/font-awesome/fonts/fontawesome-webfont.woff2',
       'bower_components/font-awesome/fonts/FontAwesome.otf',
-    ]
+    ],
+    assets: []
   }
 };

@@ -1,10 +1,8 @@
 *~
-build/
 plugins
 .sass-cache/
 www
 platforms
-bin/
 dist/
 node_modules/
 bower_components/
@@ -12,5 +10,4 @@ vendor/
 Thumbs.db
 .project
 .settings
-src/conf.js
-configuration.json
+config/secret.json

@@ -31,7 +31,7 @@ module.exports = function ( grunt ) {
      */
     pkg: grunt.file.readJSON("package.json"),
 
-    conf: grunt.file.readJSON("./config/configuration.json"),
+    conf: grunt.file.readJSON("./config/secret.json"),
 
     /**
      * The banner is the comment that is placed at the top of our compiled
@@ -143,6 +143,17 @@ module.exports = function ( grunt ) {
           {
             src: [ '<%= vendor_files.assets %>' ],
             dest: '<%= build_dir %>/assets/',
+            cwd: '.',
+            expand: true,
+            flatten: true
+          }
+       ]
+      },
+      build_vendor_fonts: {
+        files: [
+          {
+            src: [ '<%= vendor_files.fonts %>' ],
+            dest: '<%= build_dir %>/assets/fonts/',
             cwd: '.',
             expand: true,
             flatten: true
@@ -471,7 +482,7 @@ module.exports = function ( grunt ) {
             base: 'src/app'
           },
           src: [ '<%= app_files.atpl %>' ],
-          dest: 'dist/templates-app.js'
+          dest: '<%= base_dir %>/<%= stage %>/<%= env %>/templates-app.js'
         },
 
         /**
@@ -482,7 +493,7 @@ module.exports = function ( grunt ) {
             base: 'src/common'
           },
           src: [ '<%= app_files.ctpl %>' ],
-          dest: 'dist/templates-common.js'
+          dest: '<%= base_dir %>/<%= stage %>/<%= env %>/templates-common.js'
         }
     },
 
@@ -595,102 +606,103 @@ module.exports = function ( grunt ) {
      * But we don't need the same thing to happen for all the files.
      */
     delta: {
-      /**
-       * By default, we want the Live Reload to work for all tasks; this is
-       * overridden in some tasks (like this file) where browser resources are
-       * unaffected. It runs by default on port 35729, which your browser
-       * plugin should auto-detect.
-       */
-      options: {
-        livereload: true
-      },
-
-      /**
-       * When the Gruntfile changes, we just want to lint it. In fact, when
-       * your Gruntfile changes, it will automatically be reloaded!
-       */
-      gruntfile: {
-        files: 'Gruntfile.js',
-        tasks: [ 'jshint:gruntfile' ],
-        options: {
-          livereload: false
-        }
-      },
-      appconf: {
-        files: ['configuration.json', "config/app.config.tpl.js"],
-        tasks: [ 'appconf' ],
+        /**
+         * By default, we want the Live Reload to work for all tasks; this is
+         * overridden in some tasks (like this file) where browser resources are
+         * unaffected. It runs by default on port 35729, which your browser
+         * plugin should auto-detect.
+         */
         options: {
           livereload: true
+        },
+
+        /**
+         * When the Gruntfile changes, we just want to lint it. In fact, when
+         * your Gruntfile changes, it will automatically be reloaded!
+         */
+        gruntfile: {
+          files: 'Gruntfile.js',
+          tasks: [ 'jshint:gruntfile' ],
+          options: {
+            livereload: false
+          }
+        },
+        appconf: {
+          files: ['secret.json', "config/app.config.tpl.js"],
+          tasks: [ 'appconf' ],
+          options: {
+            livereload: true
+          }
+        },
+
+        /**
+         * When our JavaScript source files change, we want to run lint them and
+         * run our unit tests.
+         */
+        jssrc: {
+          files: [
+            '<%= app_files.js %>',
+            'src/i18n/**'
+          ],
+          tasks: [ 'set_env:web', 'set_stage:build', 'jshint:src', 'copy:build_appjs', 'copy:build_i18n', "devcode:webdev"]
+        },
+
+        /**
+         * When assets are changed, copy them. Note that this will *not* copy new
+         * files, so this is probably not very useful.
+         */
+        assets: {
+          files: [
+            'src/assets/**/*'
+          ],
+          tasks: [ 'set_env:web', 'set_stage:build', 'copy:build_app_assets' ]
+        },
+
+        /**
+         * When index.html changes, we need to compile it.
+         */
+        html: {
+          files: [ '<%= app_files.html %>' ],
+          tasks: [ 'set_env:web', 'set_stage:build', 'index:build' ]
+        },
+        /**
+         * When our templates change, we only rewrite the template cache.
+         */
+        tpls: {
+          files: [
+            '<%= app_files.atpl %>',
+            '<%= app_files.ctpl %>'
+          ],
+          tasks: [  'set_env:web', 'set_stage:build', 'html2js' ]
+        },
+
+        /**
+         * When the CSS files change, we need to compile and minify them.
+         */
+        less: {
+          files: [ 'src/**/**.less' ],
+          tasks: [ 'set_env:web', 'set_stage:build', 'less:build' ]
+        },
+        sass: {
+          files: [ 'src/**/**.scss' ],
+          tasks: [ 'set_env:web', 'set_stage:build', 'sass:build' ]
+        },
+
+
+        /**
+         * When a JavaScript unit test file changes, we only want to lint it and
+         * run the unit tests. We don't want to do any live reloading.
+         */
+        jsunit: {
+          files: [
+            '<%= app_files.jsunit %>'
+          ],
+          tasks: [ 'set_env:web', 'set_stage:build', 'jshint:test', 'karma:unit:run' ],
+          options: {
+            livereload: false
+          }
         }
-      },
 
-      /**
-       * When our JavaScript source files change, we want to run lint them and
-       * run our unit tests.
-       */
-      jssrc: {
-        files: [
-          '<%= app_files.js %>',
-          'src/i18n/**'
-        ],
-        tasks: [ 'jshint:src', 'copy:build_appjs', 'copy:build_i18n', "devcode:webdev"]
-      },
-
-      /**
-       * When assets are changed, copy them. Note that this will *not* copy new
-       * files, so this is probably not very useful.
-       */
-      assets: {
-        files: [
-          'src/assets/**/*'
-        ],
-        tasks: [ 'copy:build_app_assets' ]
-      },
-
-      /**
-       * When index.html changes, we need to compile it.
-       */
-      html: {
-        files: [ '<%= app_files.html %>' ],
-        tasks: [ 'index:build' ]
-      },
-      /**
-       * When our templates change, we only rewrite the template cache.
-       */
-      tpls: {
-        files: [
-          '<%= app_files.atpl %>',
-          '<%= app_files.ctpl %>'
-        ],
-        tasks: [ 'html2js:build' ]
-      },
-
-      /**
-       * When the CSS files change, we need to compile and minify them.
-       */
-      less: {
-        files: [ 'src/**/**.less' ],
-        tasks: [ 'less:build' ]
-      },
-      sass: {
-        files: [ 'src/**/**.scss' ],
-        tasks: [ 'sass:build' ]
-      },
-
-
-      /**
-       * When a JavaScript unit test file changes, we only want to lint it and
-       * run the unit tests. We don't want to do any live reloading.
-       */
-      jsunit: {
-        files: [
-          '<%= app_files.jsunit %>'
-        ],
-        tasks: [ 'jshint:test', 'karma:unit:run' ],
-        options: {
-          livereload: false
-        }
-      },
     },
     shell: {
         install: {
@@ -698,7 +710,7 @@ module.exports = function ( grunt ) {
             stderr: true
             },
             command: [
-            'adb install -r ./dist/app.apk'
+            'adb install -r ./dist/phonegap/app.apk'
             ].join('&&')
         },
         androidLog: {
@@ -713,7 +725,7 @@ module.exports = function ( grunt ) {
     compress: {
         bin: {
             options: {
-                archive: 'dist/upload_compile.zip'
+                archive: 'dist/phonegap/upload_compile.zip'
             },
             files: [
                 //{src: ['config.xml'], dest: '.', cwd:'./config/'},
@@ -723,7 +735,7 @@ module.exports = function ( grunt ) {
         },
         build: {
             options: {
-                archive: 'dist/upload_build.zip'
+                archive: 'dist/phonegap/upload_build.zip'
             },
             files: [
                 //{src: ['config/config.xml'], dest: '.'},
@@ -744,26 +756,26 @@ module.exports = function ( grunt ) {
                 android: { "key_pw": "<%=conf.phonegap.keys.android.key_pw %>", "keystore_pw": "<%=conf.phonegap.keys.android.keystore_pw %>" }
             },
             download: {
-                ios: './dist/app.ipa',
-                android: './dist/app.apk'
+                ios: './dist/phonegap/app.ipa',
+                android: './dist/phonegap/app.apk'
             },
             pollRate : 10
             }
         },
         build: {
             options: {
-            archive: "dist/upload_build.zip",
+            archive: "dist/phonegap/upload_build.zip",
             "appId": "<%=conf.phonegap.appId %>",
             "user": {
                 "token": "<%=conf.phonegap.token %>"
             },
             keys: {
-                //ios: { "password": "<%=conf.phonegap.keys.ios.password %>" },
+                ios: { "password": "<%=conf.phonegap.keys.ios.password %>" },
                 android: { "key_pw": "<%=conf.phonegap.keys.android.key_pw %>", "keystore_pw": "<%=conf.phonegap.keys.android.keystore_pw %>" }
             },
             download: {
-                //ios: './dist/app.ipa',
-                android: './dist/app.apk'
+                ios: './dist/phonegap/app.ipa',
+                android: './dist/phonegap/app.apk'
             },
             pollRate : 10
             }
@@ -776,7 +788,6 @@ module.exports = function ( grunt ) {
     userConfig.build_dir = userConfig.build_dir + "/" + data;
     userConfig.compile_dir = userConfig.compile_dir + "/" + data;
     grunt.initConfig( grunt.util._.extend( taskConfig, userConfig ) );
-    grunt.log.debug(grunt.config());
 
   });
   grunt.registerTask("set_stage", function(data) {
@@ -794,8 +805,7 @@ module.exports = function ( grunt ) {
    * before watching for changes.
    */
   grunt.renameTask( 'watch', 'delta');
-  grunt.registerTask( 'watch:web', [ 'appconf', 'set_env:web', 'web-employee', 'http-server:dev', 'delta' ] );
-  grunt.registerTask( 'watch:mobile', [ 'appconf', 'set_env:mobile', 'mobile-employee', 'http-server:dev', 'delta' ] );
+  grunt.registerTask( 'watch', [ 'appconf', 'set_env:web', 'set_stage:build', 'web-employee', 'http-server:dev', 'delta' ] );
   grunt.registerTask( 'test:web', [ 'appconf', 'set_env:web', 'set_stage:build', 'karmaconfig', 'karma:continuous' ] );
   grunt.registerTask( 'test:mobile', [ 'appconf', 'set_env:mobile', 'set_stage:build', 'karmaconfig', 'karma:continuous' ] );
   // grunt.registerTask( 'default', [ 'build', 'compile' ] );
@@ -818,7 +828,7 @@ module.exports = function ( grunt ) {
 
   grunt.registerTask( 'web-employee', [
     'clean:build', 'html2js', 'jshint', 'cssparser', 'clean:sass_build_tmp',
-    'concat:build_css', 'copy:build_app_assets', 'copy:build_vendor_assets',
+    'concat:build_css', 'copy:build_app_assets', 'copy:build_vendor_assets', 'copy:build_vendor_fonts',
     'copy:build_appjs', 'copy:build_i18n', 'copy:build_vendorjs', 'clean:templates', 'index:build',
     'devcode:webdev', 'devcode:build'
   ]);
@@ -831,7 +841,7 @@ module.exports = function ( grunt ) {
 
   grunt.registerTask( 'mobile-employee', [
     'clean:build', 'html2js', 'jshint', 'cssparser', 'clean:sass_build_tmp',
-    'concat:build_css', 'copy:build_app_assets', 'copy:build_vendor_assets',
+    'concat:build_css', 'copy:build_app_assets', 'copy:build_vendor_assets', 'copy:build_vendor_fonts',
     'copy:build_appjs', 'copy:build_i18n', 'copy:build_vendorjs_phonegap', 'index:buildphonegap',
     'devcode:phonegap', 'devcode:build', 'copy:build_phonegap_config', 'compress:build', 'clean:templates'
   ]);
@@ -880,6 +890,7 @@ module.exports = function ( grunt ) {
       }
     });
   });
+
   /**
    * The index.html template includes the stylesheet and javascript sources
    * based on dynamic names calculated in this Gruntfile. This task assembles
