@@ -7,8 +7,8 @@
 Main folders and files
 
 * bower.json contains the list of web dependecies (jquery, bootstrap...)
-* config contains configuration files (app, phonegap, secret deploy keys)
-* src contains the source code (javascript, images, styles) of the app
+* config/ contains configuration files (app, phonegap, secret deploy keys)
+* src/ contains the source code (javascript, images, styles) of the app
 
 
 ## Installation
