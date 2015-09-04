@@ -1,5 +1,6 @@
 <div class="well">
   <h1>{{ 'welcome' | translate }}</h1>
+  <h3>Your name : {{_identity.user.username }}</h3>
   <p>
     <button class="btn" ng-class="{'btn-success': (order == 'timestamp')}" ng-init="order = 'timestamp'" ng-click="order = 'timestamp'">Order by date</button>
     <button class="btn"  ng-class="{'btn-success': (order == 'title')}" ng-click="order = 'title'">Order by title</button>

@@ -265,14 +265,14 @@ module.exports = function ( grunt ) {
               options: {
                   source: '<%= build_dir %>/',
                   dest: '<%= build_dir %>/',
-                  env: 'phonegap'
+                  env: 'mobile'
               }
           },
           phonegapprod : {           // settings for task used with 'devcode:web'
               options: {
                   source: '<%= compile_dir %>/',
                   dest: '<%= compile_dir %>/',
-                  env: 'phonegap'
+                  env: 'mobile'
               }
           },
           webdev: {
@@ -590,7 +590,7 @@ module.exports = function ( grunt ) {
         bucket: "<%= conf.aws.bucket %>"
       },
       build: {
-        cwd: "<%= build_dir %>/",
+        cwd: "<%= base_dir %>/<%= stage %>/<%= env %>/",
         src: "**"
       }
     },
@@ -625,13 +625,6 @@ module.exports = function ( grunt ) {
           tasks: [ 'jshint:gruntfile' ],
           options: {
             livereload: false
-          }
-        },
-        appconf: {
-          files: ['secret.json', "config/app.config.tpl.js"],
-          tasks: [ 'appconf' ],
-          options: {
-            livereload: true
           }
         },
 
@@ -805,16 +798,18 @@ module.exports = function ( grunt ) {
    * before watching for changes.
    */
   grunt.renameTask( 'watch', 'delta');
-  grunt.registerTask( 'watch', [ 'appconf', 'set_env:web', 'set_stage:build', 'web-employee', 'http-server:dev', 'delta' ] );
-  grunt.registerTask( 'test:web', [ 'appconf', 'set_env:web', 'set_stage:build', 'karmaconfig', 'karma:continuous' ] );
-  grunt.registerTask( 'test:mobile', [ 'appconf', 'set_env:mobile', 'set_stage:build', 'karmaconfig', 'karma:continuous' ] );
+  grunt.registerTask( 'watch', [ 'set_env:web', 'set_stage:build', 'web-employee', 'http-server:dev', 'delta' ] );
+  grunt.registerTask( 'test:web', [ 'set_env:web', 'set_stage:build', 'karmaconfig', 'karma:continuous' ] );
+  grunt.registerTask( 'test:mobile', [ 'set_env:mobile', 'set_stage:build', 'karmaconfig', 'karma:continuous' ] );
   // grunt.registerTask( 'default', [ 'build', 'compile' ] );
   // grunt.registerTask( 'test', ['karmaconfig', 'karma:continuous']);
-  grunt.registerTask( 'build:web',      ['appconf', 'set_env:web','set_stage:build', 'web-employee', 'karmaconfig', 'karma:continuous']);
-  grunt.registerTask( 'build:mobile',      ['appconf', 'set_env:mobile','set_stage:build', 'mobile-employee', 'karmaconfig', 'karma:continuous', 'phonegap-build:build', 'shell:install']);
-  grunt.registerTask( 'compile:web',    ['appconf', 'set_env:web','set_stage:compile', 'web-release', 'karmaconfig', 'karma:continuous', 'http-server:prod']);
-  grunt.registerTask( 'compile:mobile', ['appconf', 'set_env:mobile','set_stage:compile', 'mobile-release', 'karmaconfig', 'karma:continuous', "phonegap-build:release", "shell:install"]);
+  grunt.registerTask( 'build:web',      ['set_env:web','set_stage:build', 'web-employee', 'karmaconfig', 'karma:continuous']);
+  grunt.registerTask( 'build:mobile',      ['set_env:mobile','set_stage:build', 'mobile-employee', 'karmaconfig', 'karma:continuous', 'phonegap-build:build', 'shell:install']);
+  grunt.registerTask( 'compile:web',    ['set_env:web','set_stage:compile', 'web-release', 'karmaconfig', 'karma:continuous', 'http-server:prod']);
+  grunt.registerTask( 'compile:mobile', ['set_env:mobile','set_stage:compile', 'mobile-release', 'karmaconfig', 'karma:continuous', "phonegap-build:release", "shell:install"]);
 
+  grunt.registerTask( 'deploy:build:s3', [ 'set_env:web', 'set_stage:build', 's3'] );
+  grunt.registerTask( 'deploy:compile:s3', [ 'set_env:web', 'set_stage:compile', 's3'] );
 
   // grunt.registerTask( 'use-less-build', ['less:build']);
   // grunt.registerTask( 'use-less-compile', ['less:compile']);
@@ -848,7 +843,7 @@ module.exports = function ( grunt ) {
 
 
   /**
-   * A utility functio"appconf"n to get all app JavaScript sources.
+   * A utility function to get all app JS sources.
    */
   function filterForJS ( files ) {
     return files.filter( function ( file ) {
@@ -869,27 +864,8 @@ module.exports = function ( grunt ) {
 
   grunt.registerTask("cssparser", function() {
     grunt.task.run(grunt.config('css_parser') + ":" + grunt.config('stage'));
-    grunt.file.copy("config/app.config.tpl.js", "src/conf.js",{
-      process: function ( contents, path ) {
-        return grunt.template.process( contents, {
-          data: {
-            config: taskConfig.conf
-          }
-        });
-      }
-    });
   });
-  grunt.registerTask("appconf", function() {
-    grunt.file.copy("config/app.config.tpl.js", "src/conf.js",{
-      process: function ( contents, path ) {
-        return grunt.template.process( contents, {
-          data: {
-            config: taskConfig.conf
-          }
-        });
-      }
-    });
-  });
+
 
   /**
    * The index.html template includes the stylesheet and javascript sources

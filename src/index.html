@@ -19,9 +19,11 @@
     <!-- endcode -->
   </head>
   <body>
-      <header username="_identity.auth.username" ng-hide="hideHeader"></header>
+      <header identity="_identity.user" state="_state"></header>
       <div class="container">
-          <div ui-view="main" class="fading-view" ></div>
+        <div class="row">
+          <left class="col-lg-3" ></left>
+          <div  class="col-lg-9 fading-view" ui-view="main"></div>
       </div>
   </body>
 </html>

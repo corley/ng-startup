@@ -23,7 +23,7 @@ angular.module( 'ng-startup.dashboard', ['ui.router.state', 'cr.remote'])
 
 }])
 .service('NewsRest', ['crRemoteHttp', function(crRemoteHttp){
-	var service = crRemoteHttp.createService("news");
+	var service = crRemoteHttp.createService("news", {auth: true});
 	return service;
 }])
 ;

@@ -48,7 +48,10 @@ angular.module(
     //set api andpoint by app config
     crRemoteProvider.addEndpoint("default", appConf.endPoint);
 
+    console.log(appConf.endPoint);
+
     $authProvider.loginUrl = appConf.endPoint + 'login';
+    $authProvider.authToken = 'Basic';
 
     //enable debug state
     $logProvider.debugEnabled(appConf.debug);

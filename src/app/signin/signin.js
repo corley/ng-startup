@@ -29,8 +29,8 @@ angular.module( 'ng-startup.signin', ['ui.router.state'])
 		$auth.login({
 		  username: username,
 		  password: password
-		}).then(function() {
-			$rootScope.$broadcast("auth:login:success", {'role': 'ROLE_USER', 'provider': 'fakelogin', 'auth': {'username': username, 'password': password}});
+		}).then(function(response) {
+			$rootScope.$broadcast("auth:login:success", {'role': response.data.role, 'provider': 'fakelogin', 'user': response.data.identity});
 		});
 	};
 
