@@ -7,7 +7,7 @@ module.exports = {
    * development and the `compile_dir` folder is where our app resides once it's
    * completely built.
    */
-  base_dir: 'dist/',
+  base_dir: 'dist',
   build_dir: 'dist/build',
   compile_dir: 'dist/compile'  ,
   css_parser: 'less',

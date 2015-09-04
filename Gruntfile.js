@@ -115,8 +115,8 @@ module.exports = function ( grunt ) {
      * The directories to delete when `grunt clean` is executed.
      */
     clean: {
-        build: ['<%= build_dir %>'],
-        bin: ['<%= compile_dir %>'],
+        build: ['<%= base_dir %>'],
+        bin: ['<%= base_dir %>'],
         sass_build_tmp: ['<%= sass.build.files[0].dest %>',"<%= sass.build.files[0].dest %>.map"],
         sass_compile_tmp: ['<%= sass.compile.files[0].dest %>',"<%= sass.compile.files[0].dest %>.map"],
         templates:['dist/templates-app.js', 'dist/templates-common.js']
@@ -637,7 +637,7 @@ module.exports = function ( grunt ) {
             '<%= app_files.js %>',
             'src/i18n/**'
           ],
-          tasks: [ 'set_env:web', 'set_stage:build', 'jshint:src', 'copy:build_appjs', 'copy:build_i18n', "devcode:webdev"]
+          tasks: [ 'set_env:web', 'set_stage:build', 'jshint:src', 'copy:build_appjs', 'copy:build_i18n', 'devcode:webdev', 'devcode:build']
         },
 
         /**
@@ -656,7 +656,7 @@ module.exports = function ( grunt ) {
          */
         html: {
           files: [ '<%= app_files.html %>' ],
-          tasks: [ 'set_env:web', 'set_stage:build', 'index:build' ]
+          tasks: [ 'set_env:web', 'set_stage:build', 'index:build', 'devcode:webdev', 'devcode:build' ]
         },
         /**
          * When our templates change, we only rewrite the template cache.
