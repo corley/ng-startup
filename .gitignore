@@ -8,6 +8,7 @@ node_modules/
 bower_components/
 vendor/
 Thumbs.db
+npm-debug.log
 .project
 .settings
 config/secret.json
