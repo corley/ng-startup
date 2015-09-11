@@ -80,8 +80,8 @@ module.exports = {
       'bower_components/cr-remote/cr-remote.js',
       'bower_components/cr-acl/cr-acl.js',
       'bower_components/cr-identity/cr-identity.js',
-      'bower_components/angulartics/dist/angulartics.min.js',
-      'bower_components/angulartics/dist/angulartics-ga.min.js',
+      'bower_components/angulartics/src/angulartics.js',
+      'bower_components/angulartics-google-analytics/lib/angulartics-google-analytics.js',
       'bower_components/ngCordova/dist/ng-cordova.js',
       'bower_components/ngInfiniteScroll/build/ng-infinite-scroll.js',
       'bower_components/angular-touch/angular-touch.js'
