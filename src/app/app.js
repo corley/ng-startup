@@ -90,6 +90,9 @@ function run($rootScope, crAcl, crSession, crRemoteHttp, crIdentity, $state, $lo
     });
 
 
+    document.addEventListener("deviceready", function(){
+      // This event is essential to any application. It signals that Cordova's device APIs have loaded and are ready to access.
+    });
 }])
 
 .controller('AppCtrl', ['$scope','$rootScope', '$location', '$state', 'cfpLoadingBar',
