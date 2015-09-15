@@ -80,6 +80,8 @@ module.exports = {
       'bower_components/cr-remote/cr-remote.js',
       'bower_components/cr-acl/cr-acl.js',
       'bower_components/cr-identity/cr-identity.js',
+      'bower_components/highcharts/highcharts.src.js',
+      'bower_components/highcharts-ng/dist/highcharts-ng.js',
       'bower_components/angulartics/src/angulartics.js',
       'bower_components/angulartics-google-analytics/lib/angulartics-google-analytics.js',
       'bower_components/ngCordova/dist/ng-cordova.js',

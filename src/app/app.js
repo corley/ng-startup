@@ -10,6 +10,7 @@ angular.module(
             'LocalStorageModule',
             'ngAnimate',
             'ngSanitize',
+            'highcharts-ng',
             'angular-loading-bar',
             'templates-app',
             'templates-common',

@@ -21,6 +21,19 @@ angular.module( 'ng-startup.dashboard', ['ui.router.state', 'cr.remote'])
 		$scope.results = res.data;
 	});
 
+  $scope.chartConfig = {
+    options: {
+        chart: {
+            type: 'bar'
+        }
+    },
+    series: [{
+        data: [10, 15, 12, 8, 7]
+    }],
+    title: {text: 'Hello'},
+    loading: false
+  };
+
 }])
 .service('NewsRest', ['crRemoteHttp', function(crRemoteHttp){
 	var service = crRemoteHttp.createService("news", {auth: true});
