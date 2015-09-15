@@ -1,0 +1,8 @@
+<nav>
+  <ul class="pagination">
+    <li class=""><a href="#">{{ pageInfo.total }} trovati</a></li>
+    <li class="" ng-show="pageInfo.prev"><a ng-click="go(pageInfo.prev)">indietro</a></li>
+    <li class="active"><a >pagina {{ pageInfo.page }}</a></li>
+    <li class="" ng-show="pageInfo.next"><a ng-click="go(pageInfo.next)">avanti</a></li>
+  </ul>
+</nav>

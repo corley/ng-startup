@@ -26,6 +26,7 @@ angular.module(
             'cr.session',
             'cr.acl',
             'cr.identity',
+            'ng-startup.paginator',
             'satellizer',
             'pascalprecht.translate',
             'infinite-scroll',

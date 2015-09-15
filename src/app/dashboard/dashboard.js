@@ -1,7 +1,7 @@
 angular.module( 'ng-startup.dashboard', ['ui.router.state', 'cr.remote'])
 .config(function config( $stateProvider ) {
 	$stateProvider.state( 'dashboard', {
-		url: '/dashboard',
+		url: '/dashboard?page',
 		views: {
 			"main": {
 				controller: 'DashboardCtrl',
@@ -16,10 +16,16 @@ angular.module( 'ng-startup.dashboard', ['ui.router.state', 'cr.remote'])
  * Dashboard controller, reserved by Acl
  */
 .controller( 'DashboardCtrl', ['$scope', '$stateParams', 'NewsRest', function DashboardCtrl( $scope, $stateParams, NewsRest ) {
+  if ($stateParams.page === undefined) {
+    $stateParams.page = 1;
+  }
 
-	NewsRest.get().then(function(res) {
+	NewsRest.get({params: {"page": $stateParams.page}}).then(function(res) {
 		$scope.results = res.data;
+    $scope.pager = res.pager;
 	});
+
+  $scope.state = "dashboard";
 
   $scope.chartConfig = {
     options: {
@@ -36,7 +42,10 @@ angular.module( 'ng-startup.dashboard', ['ui.router.state', 'cr.remote'])
 
 }])
 .service('NewsRest', ['crRemoteHttp', function(crRemoteHttp){
-	var service = crRemoteHttp.createService("news", {auth: true});
+	var service = crRemoteHttp.createService("news", {
+    responseInterceptorSuccess: 'paginator',
+    auth: true
+  });
+
 	return service;
-}])
-;
+}]);
