@@ -50,8 +50,6 @@ angular.module(
     //set api andpoint by app config
     crRemoteProvider.addEndpoint("default", appConf.endPoint);
 
-    console.log(appConf.endPoint);
-
     $authProvider.loginUrl = appConf.endPoint + 'login';
     $authProvider.authToken = 'Basic';
 
@@ -76,7 +74,7 @@ function run($rootScope, crAcl, crSession, crRemoteHttp, crIdentity, $state, $lo
 
     //what append on user successful login
     $rootScope.$on('auth:identity:success', function(event, data) {
-      $state.go("dashboard", {'area': 'test'});
+      $state.go("dashboard");
     });
 
     //what append when user refresh the page and identity is restored

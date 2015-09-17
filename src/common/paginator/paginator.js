@@ -12,8 +12,8 @@ angular.module('ng-startup.paginator', [
           page: 1,
           last: false
         };
-        pager.count = parseInt(headers['x-quantity']);
-        pager.total = parseInt(headers['x-count']);
+        pager.count = parseInt(headers['x-count']);
+        pager.total = parseInt(headers['x-total']);
         pager.from = parseInt(headers['x-from']);
         pager.params = data.config.params;
         pager.to = parseInt(headers['x-to']);
