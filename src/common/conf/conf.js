@@ -13,5 +13,4 @@ angular.module('ng-startup.appConf', [])
   "debug": false
 })
 // endenv
-
 ;
