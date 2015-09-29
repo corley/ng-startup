@@ -173,31 +173,68 @@ a:focus {
 }
 
 /** LOADING BAR END*/
-/** SPINNER END */
+
 
 /** ITERATIONTS TO CREATE MARGIN AND PADDING CLASSES START */
 
-@iterations: 20;
+@iterations: 40;
 .span-loop (@i) when (@i > 0) {
     @marginsize: @i * 5;
-    .margin_@{marginsize} {
-        margin: ~"@{marginsize}px";
+    .margin-@{marginsize} {
+      margin: ~"@{marginsize}px";
     }
-    .margin_@{marginsize}_0 {
-        margin: ~"@{marginsize}px 0";
+    .margin-@{marginsize}-0-0-0 {
+      margin: ~"@{marginsize}px 0";
     }
-    .margin_@{marginsize}_0_0 {
-        margin: ~"@{marginsize}px 0 0";
+    .margin-0-@{marginsize}-0-0 {
+      margin: ~"0 @{marginsize}px 0 0";
     }
-    .padding_@{marginsize} {
-        padding: ~"@{marginsize}px";
+    .margin-0-0-@{marginsize}-0 {
+      margin: ~"0 0 @{marginsize}px 0";
     }
-    .padding_@{marginsize}_0 {
-        padding: ~"@{marginsize}px 0";
+    .margin-0-0-0-@{marginsize} {
+      margin: ~"0 0 0 @{marginsize}px";
     }
-    .padding_@{marginsize}_0_0 {
-        padding: ~"@{marginsize}px 0 0";
+    .margin-@{marginsize}-x-x-x {
+      margin-top: ~"@{marginsize}px";
     }
+    .margin-x-@{marginsize}-x-x {
+      margin-right: ~"@{marginsize}px";
+    }
+    .margin-x-x-@{marginsize}-x {
+      margin-bottom: ~"@{marginsize}px";
+    }
+    .margin-x-x-x-@{marginsize} {
+      margin-left: ~"@{marginsize}px";
+    }
+    .padding-@{marginsize} {
+      padding: ~"@{marginsize}px";
+    }
+    .padding-@{marginsize}-0-0-0 {
+      padding: ~"@{marginsize}px 0";
+    }
+    .padding-0-@{marginsize}-0-0 {
+      padding: ~"0 @{marginsize}px 0 0";
+    }
+    .padding-0-0-@{marginsize}-0 {
+      padding: ~"0 0 @{marginsize}px 0";
+    }
+    .padding-0-0-0-@{marginsize} {
+      padding: ~"0 0 0 @{marginsize}px";
+    }
+    .padding-@{marginsize}-x-x-x {
+      padding-top: ~"@{marginsize}px";
+    }
+    .padding-x-@{marginsize}-x-x {
+      padding-right: ~"@{marginsize}px";
+    }
+    .padding-x-x-@{marginsize}-x {
+      padding-bottom: ~"@{marginsize}px";
+    }
+    .padding-x-x-x-@{marginsize} {
+      padding-left: ~"@{marginsize}px";
+    }
+
     .span-loop(@i - 1);
 }
 .span-loop (@iterations);
