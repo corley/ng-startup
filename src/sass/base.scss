@@ -1,0 +1,235 @@
+/** HELPERS CLASSES, EDIT TO FIT YOUR LAYOUT PREFENCES ANDNEEDS */
+
+/** ANIMATIONS START */
+
+/** fading animation, just add fading-item to ng-repeat and ng-show items */
+.fading-item.ng-enter, .fading-item.ng-move {
+  -webkit-transition:0.5s linear all;
+  -moz-transition:0.5s linear all;
+  -o-transition:0.5s linear all;
+  transition:0.5s linear all;
+  opacity:0;
+}
+
+
+.fading-item.ng-enter.ng-enter-active,
+.fading-item.ng-move.ng-move-active {
+  opacity:1;
+}
+
+
+.fading-item.ng-leave {
+  -webkit-animation:0.5s fading_animation;
+  -moz-animation:0.5s fading_animation;
+  -o-animation:0.5s fading_animation;
+  animation:0.5s fading_animation;
+}
+
+@keyframes fading_animation {
+  from { opacity:1; }
+  to { opacity:0; }
+}
+
+@-webkit-keyframes fading_animation {
+  from { opacity:1; }
+  to { opacity:0; }
+}
+
+@-moz-keyframes fading_animation {
+  from { opacity:1; }
+  to { opacity:0; }
+}
+
+@-o-keyframes fading_animation {
+  from { opacity:1; }
+  to { opacity:0; }
+}
+
+
+/** view animation when route changes (fading animation, to activate add fading-view to ui-vide div) */
+[ui-view].ng-enter.fading-view {
+  -webkit-transition:0.2s linear all;
+  -moz-transition:0.2s linear all;
+  -o-transition:0.2s linear all;
+  transition:0.2s linear all;
+  opacity:0;
+}
+
+[ui-view].ng-enter.fading-view {
+  opacity: 0;
+}
+
+[ui-view].ng-enter-active.fading-view {
+  opacity: 1;
+}
+
+[ui-view].ng-leave.fading-view {
+  opacity: 0;
+}
+
+[ui-view].ng-leave-active.fading-view {
+  opacity: 0;
+}
+
+/** view animation when route changes (sliding and rotate animation, to activate add sliding-view to ui-vide div) */
+[ui-view].ng-enter.sliding-view, [ui-view].ng-leave.sliding-view {
+  position: absolute;
+  left: 0;
+  right: 0;
+  -webkit-transition:all .5s ease-in-out;
+    -moz-transition:all .5s ease-in-out;
+    -o-transition:all .5s ease-in-out;
+    transition:all .5s ease-in-out;
+}
+
+[ui-view].ng-enter.sliding-view {
+  opacity: 0;
+  -webkit-transform:scale3d(0.5, 0.5, 0.5);
+  -moz-transform:scale3d(0.5, 0.5, 0.5);
+  transform:scale3d(0.5, 0.5, 0.5);
+}
+
+[ui-view].ng-enter-active.sliding-view {
+  opacity: 1;
+  -webkit-transform:scale3d(1, 1, 1);
+  -moz-transform:scale3d(1, 1, 1);
+  transform:scale3d(1, 1, 1);
+}
+
+[ui-view].ng-leave.sliding-view {
+  opacity: 1;
+  -webkit-transform:translate3d(0, 0, 0);
+  -moz-transform:translate3d(0, 0, 0);
+  transform:translate3d(0, 0, 0);
+}
+
+[ui-view].ng-leave-active.sliding-view {
+  opacity: 0;
+  -webkit-transform:translate3d(100px, 0, 0);
+  -moz-transform:translate3d(100px, 0, 0);
+  transform:translate3d(100px, 0, 0);
+}
+
+
+/** ANIMATIONS START */
+
+
+
+/** ANIMATIONS END */
+
+/** HELPERS CLASS START */
+.no-cursor, a.no-cursor, span.no-cursor, button.no-cursor,
+.no-cursor:hover, a.no-cursor:hover, span.no-cursor:hover, button.no-cursor:hover {
+  cursor:none;
+}
+
+.text-white { color: #fff; }
+.text-black { color: #000; }
+.bg-white { background-color: #fff; }
+.bg-black { background-color: #000; }
+
+
+/** HELPERS CLASS END */
+
+/** MOBILE TRICKS START*/
+input, form, button, button:active, button:focus, input:focus, a:active, a:hover {
+  -webkit-tap-highlight-color: rgba(0,0,0,0);
+  -webkit-tap-highlight-color: transparent; /* For some Androids */
+}
+.btn.active,
+.btn:active {
+  box-shadow:none;
+}
+a:hover {
+  text-decoration:none;
+}
+a:focus {
+  outline:none;
+}
+/** MOBILE TRICKS END*/
+
+
+/** SPINNER START */
+
+/** LOADING BAR START*/
+
+#loading-bar-spinner {
+    display: block;
+    left: 46%;
+    position: fixed;
+    top: 33%;
+    z-index: 10002;
+    padding: 10px;
+    border-radius: 3px;
+    background: rgba(0,0,0,0.5);
+    color:#fff;
+}
+#loading-bar-spinner .spinner-icon {
+  color:#fff;
+  border-top-color:  #fff;
+  border-left-color: #fff;
+  width:20px;
+  height:20px;
+}
+
+/** LOADING BAR END*/
+
+@for $i from 1 through 40 {
+
+    $marginsize:  $i * 5;
+
+    .margin-#{$i} {
+      margin: $marginsize px;
+    }
+    .margin-#{$marginsize}-0-0-0 {
+      margin: $marginsize px 0;
+    }
+    .margin-0-#{$marginsize}-0-0 {
+      margin: $marginsize px 0 0;
+    }
+    .margin-0-0-#{$marginsize}-0 {
+      margin: 0 0 $marginsize px 0;
+    }
+    .margin-0-0-0-#{$marginsize} {
+      margin: 0 0 0 $marginsize px;
+    }
+    .margin-#{$marginsize}-x-x-x {
+      margin-top: $marginsize px;
+    }
+    .margin-x-#{$marginsize}-x-x {
+      margin-right: $marginsize px;
+    }
+    .margin-x-x-#{$marginsize}-x {
+      margin-bottom: $marginsize px;
+    }
+    .margin-x-x-x-#{$marginsize} {
+      margin-left: $marginsize px;
+    }
+    .padding-#{$marginsize} {
+      padding: $marginsize px;
+    }
+    .padding-#{$marginsize}-0-0-0 {
+      padding: $marginsize px 0;
+    }
+    .padding-0-#{$marginsize}-0-0 {
+      padding: $marginsize px 0 0;
+    }
+    .padding-0-0-#{$marginsize}-0 {
+      padding: $marginsize px 0;
+    }
+    .padding-0-0-0-#{marginsize} {
+      padding: 0 0 0 $marginsize px;
+    }
+    .padding-#{$marginsize}-x-x-x {
+      padding-top: $marginsize px;
+    }
+    .padding-x-#{$marginsize}-x-x {
+      padding-right: $marginsize px;
+    }
+    .padding-x-x-#{$marginsize}-x {
+      padding-bottom: $marginsize px;
+    }
+    .padding-x-x-x-#{$marginsize} {
+      padding-left: $marginsize px;
+    }
+}
