@@ -27,6 +27,8 @@
     <preference name="exit-on-suspend"            value="false" />          <!-- ios: if set to true, app will terminate when home button is pressed -->
     <preference name="show-splash-screen-spinner" value="false" />           <!-- ios: if set to false, the spinner won't appear on the splash screen during app loading -->
     <preference name="auto-hide-splash-screen"    value="true" />           <!-- ios: if set to false, the splash screen must be hidden using a JavaScript API -->
+    <preference name="EnableViewportScale" value="true" />
+    <preference name="DisallowOverscroll"         value="true"/>
 
     <preference name="AutoHideSplashScreen" value="true" />
     <preference name="FadeSplashScreen" value="true" />
@@ -39,23 +41,55 @@
     <!-- Core plugins -->
     <gap:plugin name="com.adobe.plugins.gaplugin" version="2.4.0" />
     <gap:plugin name="nl.x-services.plugins.launchmyapp" version="3.2.0">
+    <gap:plugin name="de.appplant.cordova.plugin.hidden-statusbar-overlay" version="1.2.0" />
+    <gap:plugin name="org.apache.cordova.splashscreen" version="0.3.4" />
         <param name="URL_SCHEME" value="CHANGEWITHYOURAPPNAME" />
     </gap:plugin>
 
 
 
 
-    <icon src="assets/phonegap/icon.png" />
+
+
+    <icon src="assets/phonegap/icon/icon.png" width="124" height="124"/>
     <icon src="assets/phonegap/icon/android/icon-36-ldpi.png"   gap:platform="android"    gap:qualifier="ldpi" />
     <icon src="assets/phonegap/icon/android/icon-48-mdpi.png"   gap:platform="android"    gap:qualifier="mdpi" />
     <icon src="assets/phonegap/icon/android/icon-72-hdpi.png"   gap:platform="android"    gap:qualifier="hdpi" />
     <icon src="assets/phonegap/icon/android/icon-96-xhdpi.png"  gap:platform="android"    gap:qualifier="xhdpi" />
+    <icon src="assets/phonegap/icon/android/icon-128-xxhdpi.png"  gap:platform="android"    gap:qualifier="xxhdpi" />
+
+    <!-- iPhone 6 / 6+ -->
+    <icon src="assets/phonegap/icon/ios/icon-60@3x.png" gap:platform="ios" width="180" height="180" />
+    <!-- iPod Touch -->
+    <icon src="assets/phonegap/icon/ios/icon-57.png" gap:platform="ios" width="57" height="57" />
+    <!-- iPhone / iPod Touch  -->
+    <icon src="assets/phonegap/icon/ios/icon-60.png" gap:platform="ios" width="60" height="60" />
+    <icon src="assets/phonegap/icon/ios/icon-60@2x.png" gap:platform="ios" width="120" height="120" />
+    <!-- iPad -->
+    <icon src="assets/phonegap/icon/ios/icon-72.png" gap:platform="ios" width="72" height="72" />
+    <icon src="assets/phonegap/icon/ios/icon-76.png" gap:platform="ios" width="76" height="76" />
+    <icon src="assets/phonegap/icon/ios/icon-76@2x.png" gap:platform="ios" width="152" height="152" />
+    <icon src="assets/phonegap/icon/ios/icon-167.png" gap:platform="ios" width="167" height="167" />
+    <!-- Settings Icon -->
+    <icon src="assets/phonegap/icon/ios/icon-small.png" gap:platform="ios" width="29" height="29" />
+    <icon src="assets/phonegap/icon/ios/icon-small@2x.png" gap:platform="ios" width="58" height="58" />
+    <!-- Spotlight Icon -->
+    <icon src="assets/phonegap/icon/ios/icon-40.png" gap:platform="ios" width="40" height="40" />
+    <icon src="assets/phonegap/icon/ios/icon-40@2x.png" gap:platform="ios" width="80" height="80" />
+
     <!-- Define app splash screen for each platform. -->
+    <gap:splash src="assets/phonegap/screen/ios/screen-iphone-portrait.png"         gap:platform="ios" width="320" height="480" />
+    <gap:splash src="assets/phonegap/screen/ios/screen-iphone-portrait-2x.png"      gap:platform="ios" width="640" height="960" />
+    <gap:splash src="assets/phonegap/screen/ios/screen-iphone-portrait-568h-2x.png" gap:platform="ios" width="640" height="1136" />
+    <gap:splash src="assets/phonegap/screen/ios/screen-ipad-portrait.png"           gap:platform="ios" width="768" height="1024" />
+    <gap:splash src="assets/phonegap/screen/ios/screen-iphone-6.png"                gap:platform="ios" width="750" height="1334" />
+    <gap:splash src="assets/phonegap/screen/ios/screen-iphone-6s.png"               gap:platform="ios" width="1242" height="2208" />
     <gap:splash src="assets/phonegap/screen/splash.png" />
     <gap:splash src="assets/phonegap/screen/android/screen-ldpi-portrait.png"       gap:platform="android" gap:qualifier="ldpi" />
     <gap:splash src="assets/phonegap/screen/android/screen-mdpi-portrait.png"       gap:platform="android" gap:qualifier="mdpi" />
     <gap:splash src="assets/phonegap/screen/android/screen-hdpi-portrait.png"       gap:platform="android" gap:qualifier="hdpi" />
     <gap:splash src="assets/phonegap/screen/android/screen-xhdpi-portrait.png"      gap:platform="android" gap:qualifier="xhdpi" />
+
 
     <access origin="*"/>
 </widget>

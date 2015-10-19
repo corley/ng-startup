@@ -27,7 +27,7 @@ module.exports = {
     atpl: [ 'src/app/**/*.tpl.html' ],
     ctpl: [ 'src/common/**/*.tpl.html' ],
     html: [ 'src/index.html' ],
-    sass: ["src/sass/main.scss", "src/app/*/**/.scss"],
+    sass: ['bower_components/angular-loading-bar/src/loading-bar.css', "src/sass/main.scss", "src/app/*/**/.scss"],
     less: ['bower_components/angular-loading-bar/src/loading-bar.css', 'src/less/main.less', 'src/app/**/*.less']
   },
 

@@ -737,7 +737,7 @@ module.exports = function ( grunt ) {
     "phonegap-build": {
         release: {
             options: {
-            archive: "dist/upload.zip",
+            archive: "dist/phonegap/upload_compile.zip",
             "appId": "<%=conf.phonegap.appId %>",
             "user": {
                 "token": "<%=conf.phonegap.token %>"
@@ -827,9 +827,9 @@ module.exports = function ( grunt ) {
   ]);
 
   grunt.registerTask( 'mobile-release', [
-    'clean:bin', 'html2js', 'jshint', 'copy:compile_assets','copy:compile_i18n', 'ngAnnotate',
-    'concat:compile_js_phonegap', 'cssparser',  'index:compile',
-    'devcode:phonegap', 'devcode:compile', 'uglify', 'copy:compile_phonegap_config', 'compress:bin', 'clean:templates'
+    'clean:bin', 'html2js', 'jshint','copy:build_app_assets', 'copy:build_vendor_assets', 'copy:build_vendor_fonts','copy:compile_assets','copy:compile_i18n', 'ngAnnotate',
+    'concat:compile_js_phonegap', 'clean:templates', 'cssparser',  'index:compile',
+    'devcode:phonegapprod', 'devcode:compile', 'uglify', 'copy:compile_phonegap_config', 'compress:bin', 'clean:templates'
   ]);
 
   grunt.registerTask( 'mobile-employee', [
