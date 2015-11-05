@@ -28,7 +28,7 @@ angular.module(
             'infinite-scroll',
             'ngTouch',
             'ngCordova',
-            'ionic' 
+            'ionic'
         ]
 )
 .config(['$urlRouterProvider', '$translateProvider', '$authProvider', 'cfpLoadingBarProvider', 'crRemoteProvider', 'appConf', '$logProvider',
@@ -59,19 +59,17 @@ angular.module(
 
  }])
 .run(['$rootScope', 'crAcl', 'crSession', 'crRemoteHttp', 'crIdentity', '$state', '$log',
-function run($rootScope, crAcl, crSession, crRemoteHttp, crIdentity, $state, $log) {
-
+function run($rootScope, crAcl, crSession, crRemoteHttp, crIdentity, $state, $log,$ionicLoading) {
 
 }])
 
-.controller('AppCtrl', ['$scope','$rootScope', '$location', '$state', 'cfpLoadingBar',
-  function AppCtrl($scope, $rootScope, $location, $state, cfpLoadingBar) {
+.controller('AppCtrl', ['$scope','$rootScope', '$location', '$state', '$ionicLoading',
+  function AppCtrl($scope, $rootScope, $location, $state, $ionicLoading) {
 
     $scope.$on('$stateChangeSuccess', function(event, toState, toParams, fromState, fromParams) {
         $rootScope._state = toState;
-        cfpLoadingBar.complete();
     });
     $scope.$on('$stateChangeStart', function(event, toState, toParams, fromState, fromParams) {
-        cfpLoadingBar.start();
+        $ionicLoading.show({'template': 'Loading...', 'duration': 500});
     });
 }]);
