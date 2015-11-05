@@ -13,8 +13,8 @@ angular.module(
             'angular-loading-bar',
             'templates-app',
             'templates-common',
-            'ui.bootstrap',
-            'ui.router',
+            // 'ui.bootstrap',
+            // 'ui.router',
             'ng-startup.appConf',
             'ng-startup.home',
             'ng-startup.layout',
@@ -27,7 +27,8 @@ angular.module(
             'pascalprecht.translate',
             'infinite-scroll',
             'ngTouch',
-            'ngCordova'
+            'ngCordova',
+            'ionic' 
         ]
 )
 .config(['$urlRouterProvider', '$translateProvider', '$authProvider', 'cfpLoadingBarProvider', 'crRemoteProvider', 'appConf', '$logProvider',

@@ -17,15 +17,13 @@
     <!-- devcode: mobile -->
     <script type="text/javascript" src="cordova.js"></script>
     <!-- endcode -->
-    
+
   </head>
   <body>
-      <header identity="_identity.user" state="_state"></header>
-      <div class="container">
-        <div class="row">
-          <left class="col-lg-3" ></left>
-          <div  class="col-lg-9 fading-view" ui-view="main"></div>
-        </div>
-      </div>
+    <header></header>
+    
+    <ion-nav-view name="main">
+      <ion-view></ion-view>
+    </ion-nav-view>
   </body>
 </html>

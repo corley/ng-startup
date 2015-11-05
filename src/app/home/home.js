@@ -1,4 +1,4 @@
-angular.module( 'ng-startup.home', ['ui.router.state'])
+angular.module( 'ng-startup.home', ['ionic'])
 .config(function config( $stateProvider ) {
 	$stateProvider.state( 'home', {
 		url: '/home',

@@ -10,7 +10,7 @@ module.exports = {
   base_dir: 'dist',
   build_dir: 'dist/build',
   compile_dir: 'dist/compile'  ,
-  css_parser: 'less',
+  css_parser: 'sass',
 
   /**
    * This is a collection of file patterns that refer to our app code (the
@@ -27,7 +27,7 @@ module.exports = {
     atpl: [ 'src/app/**/*.tpl.html' ],
     ctpl: [ 'src/common/**/*.tpl.html' ],
     html: [ 'src/index.html' ],
-    sass: ['bower_components/angular-loading-bar/src/loading-bar.css', "src/sass/main.scss", "src/app/*/**/.scss"],
+    sass: [ "src/sass/main.scss", "src/app/*/**/.scss"],
     less: ['bower_components/angular-loading-bar/src/loading-bar.css', 'src/less/main.less', 'src/app/**/*.less']
   },
 
@@ -65,8 +65,6 @@ module.exports = {
       'bower_components/jquery/dist/jquery.js',
       'bower_components/bootstrap/dist/js/bootstrap.js',
       'bower_components/angular-ui-router/release/angular-ui-router.js',
-      'bower_components/angular-bootstrap/ui-bootstrap.js',
-      'bower_components/angular-bootstrap/ui-bootstrap-tpls.js',
       'bower_components/angular-loading-bar/build/loading-bar.js',
       'bower_components/angular-ui-utils/modules/route/route.js',
       'bower_components/angular-animate/angular-animate.js',
@@ -83,6 +81,7 @@ module.exports = {
       'bower_components/angulartics/src/angulartics.js',
       'bower_components/angulartics-google-analytics/lib/angulartics-google-analytics.js',
       'bower_components/ngCordova/dist/ng-cordova.js',
+      'bower_components/ionic/release/js/ionic.bundle.js',
       'bower_components/ngInfiniteScroll/build/ng-infinite-scroll.js',
       'bower_components/angular-touch/angular-touch.js'
     ],
@@ -95,6 +94,10 @@ module.exports = {
       'bower_components/font-awesome/fonts/fontawesome-webfont.woff',
       'bower_components/font-awesome/fonts/fontawesome-webfont.woff2',
       'bower_components/font-awesome/fonts/FontAwesome.otf',
+      'bower_components/ionic/release/fonts/ionicons.otf',
+      'bower_components/ionic/release/fonts/ionicons.ttf',
+      'bower_components/ionic/release/fonts/ionicons.svg',
+      'bower_components/ionic/release/fonts/ionicons.wofft'
     ],
     assets: []
   },
@@ -104,8 +107,6 @@ module.exports = {
       'bower_components/jquery/dist/jquery.js',
       'bower_components/bootstrap/dist/js/bootstrap.js',
       'bower_components/angular-ui-router/release/angular-ui-router.js',
-      'bower_components/angular-bootstrap/ui-bootstrap.js',
-      'bower_components/angular-bootstrap/ui-bootstrap-tpls.js',
       'bower_components/angular-loading-bar/build/loading-bar.js',
       'bower_components/angular-ui-utils/modules/route/route.js',
       'bower_components/angular-animate/angular-animate.js',
@@ -118,6 +119,7 @@ module.exports = {
       'bower_components/cr-session/cr-session.js',
       'bower_components/cr-remote/cr-remote.js',
       'bower_components/cr-acl/cr-acl.js',
+      'bower_components/ionic/release/js/ionic.bundle.js',
       'bower_components/cr-identity/cr-identity.js',
       'bower_components/angulartics/dist/angulartics.min.js',
       'bower_components/angulartics/dist/angulartics-ga.min.js',
@@ -134,6 +136,10 @@ module.exports = {
       'bower_components/font-awesome/fonts/fontawesome-webfont.woff',
       'bower_components/font-awesome/fonts/fontawesome-webfont.woff2',
       'bower_components/font-awesome/fonts/FontAwesome.otf',
+      'bower_components/ionic/release/fonts/ionicons.otf',
+      'bower_components/ionic/release/fonts/ionicons.ttf',
+      'bower_components/ionic/release/fonts/ionicons.svg',
+      'bower_components/ionic/release/fonts/ionicons.wofft'
     ],
     assets: []
   }
